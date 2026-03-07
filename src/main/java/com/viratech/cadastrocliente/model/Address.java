@@ -1,20 +1,31 @@
 package com.viratech.cadastrocliente.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
 public class Address {
 
+    @Column(nullable = false)
     private String postalCode;
+
+    @Column(nullable = false)
     private String street;
+
+    @Column(nullable = false)
     private String number;
+
+    @Column(nullable = false)
     private String neighborhood;
+
+    @Column(nullable = false)
     private String city;
+
+    @Column(nullable = false)
     private String state;
 }
