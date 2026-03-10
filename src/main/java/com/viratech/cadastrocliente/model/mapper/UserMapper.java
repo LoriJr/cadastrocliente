@@ -7,7 +7,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+import java.util.List;
+
+@Mapper(componentModel = MappingConstants.
+        ComponentModel.SPRING, uses = AddressMapper.class)
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
@@ -15,4 +18,6 @@ public interface UserMapper {
     User toEntity(UserRequestDTO userRequestDTO);
 
     UserResponseDTO toResponseDTO(User user);
+
+    List<UserResponseDTO> toListUserResponseDTO(List<User> userList);
 }
