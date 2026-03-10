@@ -26,7 +26,7 @@ public class UserService {
         return userMapper.toListUserResponseDTO(userRepository.findAll());
     }
 
-    public UserResponseDTO findUser(String email){
+    public UserResponseDTO findUserByEmail(String email){
         return userMapper.toResponseDTO(userRepository.findByEmail(email));
     }
 
