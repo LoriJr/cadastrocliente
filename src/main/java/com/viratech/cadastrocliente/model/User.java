@@ -1,16 +1,14 @@
 package com.viratech.cadastrocliente.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import lombok.*;
-import org.hibernate.validator.constraints.br.CPF;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Builder
 @Setter
 @Getter
 @NoArgsConstructor
@@ -30,7 +28,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String fone;
+    private String phone;
 
     @Column(nullable = false)
     private String cpf;
@@ -38,6 +36,7 @@ public class User {
     @Column(nullable = false)
     private LocalDate birthDate;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Embedded

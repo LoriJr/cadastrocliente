@@ -1,6 +1,5 @@
 package com.viratech.cadastrocliente.service;
 
-import com.viratech.cadastrocliente.model.User;
 import com.viratech.cadastrocliente.model.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.model.dto.UserResponseDTO;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
@@ -19,7 +18,7 @@ public class UserService {
 
     public UserResponseDTO userSave(UserRequestDTO request){
         return userMapper.toResponseDTO(
-                userMapper.toEntity(request));
+                userRepository.save(userMapper.toEntity(request)));
     }
 
     public List<UserResponseDTO> findAllUsers(){
