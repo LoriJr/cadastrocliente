@@ -57,6 +57,17 @@ public class UserController {
         return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualiza um usuário existente",description = "Método para atualizar os dados de um usuário e seu endereço com base no ID informado")
+    @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Dados da requisição inválidos (erro de validação)")
+    @ApiResponse(responseCode = "404", description = "Usuário não encontrado para o ID fornecido")
+    @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UserRequestDTO dto, @PathVariable Long id){
+        return ResponseEntity.ok().body(userService.updateUser(dto, id));
+    }
+
+
     @DeleteMapping("/{email}")
     @Operation(summary = "Deleta usuário por email", description = "Método para deletar usuário por email")
     @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso")

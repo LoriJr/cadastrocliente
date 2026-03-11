@@ -1,5 +1,6 @@
 package com.viratech.cadastrocliente.service;
 
+import com.viratech.cadastrocliente.model.User;
 import com.viratech.cadastrocliente.model.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.model.dto.UserResponseDTO;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
@@ -31,5 +32,12 @@ public class UserService {
 
     public void deleteUserByEmail(String email){
         userRepository.deleteByEmail(email);
+    }
+
+    public UserResponseDTO updateUser(UserRequestDTO dto, Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Usuário não encontrado"));
+        userMapper.updateUser(dto, user);
+        return userMapper.toResponseDTO(userRepository.save(user));
     }
 }
