@@ -1,34 +1,43 @@
 package com.viratech.cadastrocliente.controller;
 
-import com.viratech.cadastrocliente.model.User;
 import com.viratech.cadastrocliente.model.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.model.dto.UserResponseDTO;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
 import com.viratech.cadastrocliente.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
+@Tag(name="cadastrocliente")
 public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
 
     @GetMapping
+    @Operation(summary = "Lista todos os usuários", description = "Método responsável por retornar todos os usuários cadastrados no sistema")
+    @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso")
+    @ApiResponse(responseCode = "204", description = "Nenhum usuário encontrado")
+    @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     public ResponseEntity<List<UserResponseDTO>> findUsers(){
         return ResponseEntity.ok(userService.findAllUsers());
     }
 
     @PostMapping
+    @Operation(summary = "Salva dados de usuário", description = "Método para salvar dados de usuário")
+    @ApiResponse(responseCode = "201", description = "Usuário salvo com sucesso")
+    @ApiResponse(responseCode = "400", description = "Email já cadastrado")
+    @ApiResponse(responseCode = "500", description = "Erro no servidor")
     public ResponseEntity<UserResponseDTO> saveUser(@RequestBody @Valid UserRequestDTO requestDTO){
         UserResponseDTO userResponseDTO = userService.userSave(requestDTO);
 
@@ -41,12 +50,19 @@ public class UserController {
     }
 
     @GetMapping("/{email}")
+    @Operation(summary = "Consulta usuário por email", description = "Método para consultar usuário por email")
+    @ApiResponse(responseCode = "200", description = "Usuário encontrado")
+    @ApiResponse(responseCode = "500", description = "Erro no servidor")
     public ResponseEntity<UserResponseDTO> findUser(@RequestParam String email){
         return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 
     @DeleteMapping("/{email}")
-    public ResponseEntity<Void> deleteUser(@RequestParam String email){
+    @Operation(summary = "Deleta usuário por email", description = "Método para deletar usuário por email")
+    @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    @ApiResponse(responseCode = "500", description = "Erro no servidor")
+    public ResponseEntity<Void> deleteUser(@PathVariable String email){
         userService.deleteUserByEmail(email);
         return ResponseEntity.noContent().build();
     }
