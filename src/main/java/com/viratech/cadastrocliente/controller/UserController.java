@@ -57,7 +57,7 @@ public class UserController {
         return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @Operation(summary = "Atualiza um usuário existente",description = "Método para atualizar os dados de um usuário e seu endereço com base no ID informado")
     @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Dados da requisição inválidos (erro de validação)")
