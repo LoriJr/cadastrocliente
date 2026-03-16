@@ -8,8 +8,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
+@Validated
 @Tag(name="cadastrocliente")
 public class UserController {
 
@@ -53,7 +56,10 @@ public class UserController {
     @Operation(summary = "Consulta usuário por email", description = "Método para consultar usuário por email")
     @ApiResponse(responseCode = "200", description = "Usuário encontrado")
     @ApiResponse(responseCode = "500", description = "Erro no servidor")
-    public ResponseEntity<UserResponseDTO> findUser(@RequestParam String email){
+    public ResponseEntity<UserResponseDTO> findUser(
+            @PathVariable
+            @Email(message="The email format is invalid")
+            String email){
         return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 
