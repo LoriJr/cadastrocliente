@@ -3,6 +3,7 @@ package com.viratech.cadastrocliente.service;
 import com.viratech.cadastrocliente.model.User;
 import com.viratech.cadastrocliente.model.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.model.dto.UserResponseDTO;
+import com.viratech.cadastrocliente.model.exceptions.ResourceNotFoundException;
 import com.viratech.cadastrocliente.model.mapper.AddressMapper;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
 import com.viratech.cadastrocliente.repository.UserRepository;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
+
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Transactional
@@ -37,9 +38,12 @@ public class UserService {
     }
 
     public UserResponseDTO findUserByEmail(String email){
+
+        log.info("[findUserByEmail] " + email);
+
         return userRepository.findByEmail(email)
                 .map(userMapper::toResponseDTO)
-                .orElseThrow(()-> new RuntimeException("User not found for this email: " + email));
+                .orElseThrow(()-> new RuntimeException("Não encontrado" + email));
     }
 
     @Transactional
