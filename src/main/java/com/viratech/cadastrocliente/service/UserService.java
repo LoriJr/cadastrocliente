@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -43,7 +42,7 @@ public class UserService {
 
         return userRepository.findByEmail(email)
                 .map(userMapper::toResponseDTO)
-                .orElseThrow(()-> new RuntimeException("Não encontrado" + email));
+                .orElseThrow(()-> new ResourceNotFoundException(email));
     }
 
     @Transactional
