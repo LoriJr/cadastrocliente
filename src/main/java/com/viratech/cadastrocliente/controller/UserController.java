@@ -55,6 +55,8 @@ public class UserController {
     @GetMapping("/{email}")
     @Operation(summary = "Consulta usuário por email", description = "Método para consultar usuário por email")
     @ApiResponse(responseCode = "200", description = "Usuário encontrado")
+    @ApiResponse(responseCode = "400", description = "Email inválido")
+    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     @ApiResponse(responseCode = "500", description = "Erro no servidor")
     public ResponseEntity<UserResponseDTO> findUser(
             @PathVariable
