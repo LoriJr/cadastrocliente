@@ -9,7 +9,7 @@ public record ApiResponseError(
         int status,
         LocalDateTime timestamp,
         String title,
-        String detail,
+        String message,
         List<ObjectError> errors
 ) {
     public record ObjectError(String name, String userMessage){}
