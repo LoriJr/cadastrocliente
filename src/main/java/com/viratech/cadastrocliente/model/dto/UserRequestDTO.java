@@ -16,11 +16,11 @@ public record UserRequestDTO (
         String email,
 
         @NotBlank
-        @Pattern(regexp = "\\d{10,11}", message = "Phone must contain 10 or 11 digits")
+        @Pattern(regexp = "\\d{10,11}", message = "{error.phone.invalid}")
         String phone,
 
         @NotBlank
-        @CPF
+        @CPF(message = "{error.cpf.invalid}")
         String cpf,
 
         @NotNull
