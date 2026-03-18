@@ -12,7 +12,7 @@ public record UserRequestDTO (
         String name,
 
         @NotBlank
-        @Email
+        @Email(message = "{error.email.invalid}")
         String email,
 
         @NotBlank
