@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -16,7 +15,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users" , uniqueConstraints = {
         @UniqueConstraint(name="uk_user_email", columnNames = "email"),
-        @UniqueConstraint(name="uk_user_cpf", columnNames = "cpf")
+        @UniqueConstraint(name="uk_user_cpf", columnNames = "cpf"),
+        @UniqueConstraint(name = "uk_user_rg",  columnNames = "rg")
 })
 
 public class User {
@@ -36,6 +36,9 @@ public class User {
 
     @Column(nullable = false)
     private String cpf;
+
+    @Column(nullable = false)
+    private String rg;
 
     @Column(nullable = false)
     private LocalDate birthDate;

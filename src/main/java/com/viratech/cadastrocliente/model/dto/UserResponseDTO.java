@@ -8,6 +8,7 @@ public record UserResponseDTO(
         String name,
         String email,
         String cpf,
+        String rg,
         LocalDate birthDate,
         AddressDTO address
 ) {

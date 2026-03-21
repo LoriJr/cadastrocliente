@@ -23,6 +23,10 @@ public record UserRequestDTO (
         @CPF(message = "{error.cpf.invalid}")
         String cpf,
 
+        @NotBlank
+        @Pattern(regexp = "^(([0-9]{1,2}\\\\.[0-9]{3}\\\\.[0-9]{3}-[0-9Xx])|([0-9]{7,9}))$", message = "{error.rg.invalid}")
+        String rg,
+
         @NotNull
         @Past
         LocalDate birthDate,
