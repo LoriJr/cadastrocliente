@@ -15,10 +15,12 @@ public class Address {
     private String postalCode;
 
     @Column(nullable = false)
-    private String street;
+    private String addressLine1;
 
     @Column(nullable = false)
     private String number;
+
+    private String addressLine2;
 
     @Column(nullable = false)
     private String neighborhood;

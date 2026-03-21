@@ -8,10 +8,12 @@ public record AddressDTO (
         String postalCode,
 
         @NotBlank
-        String street,
+        String addressLine1,
 
         @NotBlank
         String number,
+
+        String addressLine2,
 
         @NotBlank
         String neighborhood,
