@@ -14,7 +14,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "users" , uniqueConstraints = {
+        @UniqueConstraint(name="uk_user_email", columnNames = "email"),
+        @UniqueConstraint(name="uk_user_cpf", columnNames = "cpf")
+})
+
 public class User {
 
     @Id
@@ -24,7 +28,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)

@@ -2,7 +2,6 @@ package com.viratech.cadastrocliente.controller;
 
 import com.viratech.cadastrocliente.model.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.model.dto.UserResponseDTO;
-import com.viratech.cadastrocliente.model.mapper.UserMapper;
 import com.viratech.cadastrocliente.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,7 +24,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @GetMapping
     @Operation(summary = "Lista todos os usuários", description = "Método responsável por retornar todos os usuários cadastrados no sistema")
@@ -39,7 +37,7 @@ public class UserController {
     @PostMapping
     @Operation(summary = "Salva dados de usuário", description = "Método para salvar dados de usuário")
     @ApiResponse(responseCode = "201", description = "Usuário salvo com sucesso")
-    @ApiResponse(responseCode = "400", description = "Email já cadastrado")
+    @ApiResponse(responseCode = "409", description = "Email já cadastrado")
     @ApiResponse(responseCode = "500", description = "Erro no servidor")
     public ResponseEntity<UserResponseDTO> saveUser(@RequestBody @Valid UserRequestDTO requestDTO){
         UserResponseDTO userResponseDTO = userService.userSave(requestDTO);
