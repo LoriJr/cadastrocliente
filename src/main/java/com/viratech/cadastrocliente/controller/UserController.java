@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,8 @@ import java.util.List;
 @Validated
 @Tag(name="cadastrocliente")
 public class UserController {
+
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -60,6 +64,9 @@ public class UserController {
             @PathVariable
             @Email(message="The email format is invalid")
             String email){
+
+        log.warn("[findUser] find user by email: " + email);
+
         return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 

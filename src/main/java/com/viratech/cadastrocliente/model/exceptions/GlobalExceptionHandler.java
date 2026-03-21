@@ -47,7 +47,12 @@ public class GlobalExceptionHandler {
         log.error("[DATABASE_ERROR] Integrity violation: {}", ex.getMessage());
 
         List<ApiResponseError.ObjectError> errors = ex.getConstraintViolations().stream()
-                .map(v -> new ApiResponseError.ObjectError(v.getPropertyPath().toString(), v.getMessage()))
+                .map(v -> {
+                    String fullPath = v.getPropertyPath().toString();
+                    String fieldName = fullPath.substring(fullPath.lastIndexOf('.') + 1);
+
+                    return new ApiResponseError.ObjectError(fieldName, v.getMessage());
+                })
                 .toList();
 
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "Invalid Parameters", "Constraint violation in submitted data", errors);
