@@ -3,17 +3,31 @@ package com.viratech.cadastrocliente.model.exceptions;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final MessageSource messageSource;
+
+    public GlobalExceptionHandler(MessageSource messageSource){
+        this.messageSource = messageSource;
+    }
+
+    private static final Map<String, ApiResponseError.ObjectError> CONSTRAINTS_MAPPING = Map.of(
+            "uk_user_email", new ApiResponseError.ObjectError("email", "error.email.violation"),
+            "uk_user_cpf", new ApiResponseError.ObjectError("cpf", "error.cpf.violation")
+    );
 
     public static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
@@ -28,6 +42,8 @@ public class GlobalExceptionHandler {
     // Erros de constraint (Service/URL)
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponseError> handlerConstraintViolationException(ConstraintViolationException ex){
+
+        log.error("[DATABASE_ERROR] Integrity violation: {}", ex.getMessage());
 
         List<ApiResponseError.ObjectError> errors = ex.getConstraintViolations().stream()
                 .map(v -> new ApiResponseError.ObjectError(v.getPropertyPath().toString(), v.getMessage()))
@@ -46,6 +62,25 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "Parâmetros Inválidos", "Violação de restrição nos dados enviados", errors);
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponseError> handlerDataIntegrityViolationException(DataIntegrityViolationException ex, Locale locale){
+
+        String rootMessage = ex.getRootCause() != null ? ex.getRootCause().getMessage() : "";
+
+        List<ApiResponseError.ObjectError> errors = CONSTRAINTS_MAPPING.entrySet().stream()
+                .filter(entry ->  rootMessage.contains(entry.getKey()))
+                .map(entry -> {
+                    String translatedMessage = messageSource.getMessage(
+                            entry.getValue().userMessage(),
+                            null,
+                            locale
+                    );
+                    return new ApiResponseError.ObjectError(entry.getValue().name(), translatedMessage);
+                })
+                .toList();
+
+        return buildErrorResponse(HttpStatus.CONFLICT, "Data conflicts", "Violation unicity", errors);
+    }
 
     private ResponseEntity<ApiResponseError> buildErrorResponse(HttpStatus status, String title, String message, List<ApiResponseError.ObjectError> errors){
         ApiResponseError error = new ApiResponseError(
