@@ -12,7 +12,7 @@ import lombok.*;
 public class Address {
 
     @Column(nullable = false)
-    private String postalCode;
+    private String zipCode;
 
     @Column(nullable = false)
     private String addressLine1;

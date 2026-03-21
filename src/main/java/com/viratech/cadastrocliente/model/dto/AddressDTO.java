@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 public record AddressDTO (
 
         @NotBlank
-        String postalCode,
+        String zipCode,
 
         @NotBlank
         String addressLine1,
