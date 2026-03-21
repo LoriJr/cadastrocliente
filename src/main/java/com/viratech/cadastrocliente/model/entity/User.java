@@ -1,4 +1,4 @@
-package com.viratech.cadastrocliente.model;
+package com.viratech.cadastrocliente.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.viratech.cadastrocliente.service;
 
-import com.viratech.cadastrocliente.model.User;
+import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.model.dto.UserResponseDTO;
 import com.viratech.cadastrocliente.model.exceptions.ApiResponseError;

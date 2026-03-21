@@ -1,6 +1,6 @@
 package com.viratech.cadastrocliente.repository;
 
-import com.viratech.cadastrocliente.model.User;
+import com.viratech.cadastrocliente.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

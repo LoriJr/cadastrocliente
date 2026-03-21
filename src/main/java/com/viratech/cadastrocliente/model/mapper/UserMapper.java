@@ -1,6 +1,6 @@
 package com.viratech.cadastrocliente.model.mapper;
 
-import com.viratech.cadastrocliente.model.User;
+import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.model.dto.UserResponseDTO;
 import org.mapstruct.*;
