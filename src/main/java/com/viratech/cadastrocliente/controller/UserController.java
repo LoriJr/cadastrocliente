@@ -40,7 +40,7 @@ public class UserController {
     @ApiResponse(responseCode = "409", description = "Email já cadastrado")
     @ApiResponse(responseCode = "500", description = "Erro no servidor")
     public ResponseEntity<UserResponseDTO> saveUser(@RequestBody @Valid UserRequestDTO requestDTO){
-        UserResponseDTO userResponseDTO = userService.userSave(requestDTO);
+        UserResponseDTO userResponseDTO = userService.userSave(requestDTO, null);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

@@ -3,6 +3,8 @@ package com.viratech.cadastrocliente.service;
 import com.viratech.cadastrocliente.model.User;
 import com.viratech.cadastrocliente.model.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.model.dto.UserResponseDTO;
+import com.viratech.cadastrocliente.model.exceptions.ApiResponseError;
+import com.viratech.cadastrocliente.model.exceptions.CustomValidationException;
 import com.viratech.cadastrocliente.model.exceptions.ResourceNotFoundException;
 import com.viratech.cadastrocliente.model.mapper.AddressMapper;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
@@ -10,9 +12,12 @@ import com.viratech.cadastrocliente.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @RequiredArgsConstructor
 @Service
@@ -22,11 +27,34 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
+    private final MessageSource messageSource;
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Transactional
-    public UserResponseDTO userSave(UserRequestDTO request){
+    public UserResponseDTO userSave(UserRequestDTO request, Locale locale){
+
+        List<ApiResponseError.ObjectError> errors = new ArrayList<>();
+
+        if(userRepository.existsByEmail(request.email())){
+            errors.add(new ApiResponseError.ObjectError("email",
+                    messageSource.getMessage("error.email.violation", null, locale)));
+        }
+
+        if(userRepository.existsByCpf(request.cpf())){
+            errors.add(new ApiResponseError.ObjectError("cpf",
+                    messageSource.getMessage("error.cpf.violation", null, locale)));
+        }
+
+        if(userRepository.existsByRg(request.rg())){
+            errors.add(new ApiResponseError.ObjectError("rg",
+                    messageSource.getMessage("error.rg.violation", null, locale)));
+        }
+
+        if(!errors.isEmpty()){
+            throw new CustomValidationException(errors);
+        }
+
         return userMapper.toResponseDTO(
                 userRepository.save(userMapper.toEntity(request)));
     }
