@@ -49,4 +49,7 @@ public class User {
     @Embedded
     private Address address;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserCredential credential;
+
 }

@@ -1,8 +1,8 @@
 package com.viratech.cadastrocliente.service;
 
 import com.viratech.cadastrocliente.model.entity.User;
-import com.viratech.cadastrocliente.model.dto.UserRequestDTO;
-import com.viratech.cadastrocliente.model.dto.UserResponseDTO;
+import com.viratech.cadastrocliente.dto.UserRequestDTO;
+import com.viratech.cadastrocliente.dto.UserResponseDTO;
 import com.viratech.cadastrocliente.model.exceptions.ApiResponseError;
 import com.viratech.cadastrocliente.model.exceptions.CustomValidationException;
 import com.viratech.cadastrocliente.model.exceptions.ResourceNotFoundException;

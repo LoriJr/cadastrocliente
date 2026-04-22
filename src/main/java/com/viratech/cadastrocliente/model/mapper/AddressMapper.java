@@ -1,7 +1,7 @@
 package com.viratech.cadastrocliente.model.mapper;
 
 import com.viratech.cadastrocliente.model.entity.Address;
-import com.viratech.cadastrocliente.model.dto.AddressDTO;
+import com.viratech.cadastrocliente.dto.AddressDTO;
 import org.mapstruct.*;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
