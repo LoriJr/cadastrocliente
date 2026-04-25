@@ -1,6 +1,7 @@
 package com.viratech.cadastrocliente.service;
 
 import com.viratech.cadastrocliente.dto.UserCredentialRequestDTO;
+import com.viratech.cadastrocliente.dto.UserCredentialResponseDTO;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
 import com.viratech.cadastrocliente.model.mapper.UserCredentialMapper;
 import com.viratech.cadastrocliente.repository.UserCredentialRepository;
@@ -16,10 +17,14 @@ public class UserCredentialService {
     private final UserCredentialMapper userCredentialMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserCredential saveUserCredential(UserCredentialRequestDTO request){
+    public UserCredentialResponseDTO saveUserCredential(UserCredentialRequestDTO request){
 
         UserCredential userCredential = userCredentialMapper.toEntity(request);
         userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
-        return userCredentialRepository.save(userCredential);
+
+        // TODO adicionar o find para o email do usuário existente
+
+        var save = userCredentialRepository.save(userCredential);
+        return userCredentialMapper.toDTO(save);
     }
 }

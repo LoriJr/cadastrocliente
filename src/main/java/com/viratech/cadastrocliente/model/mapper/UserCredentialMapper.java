@@ -1,6 +1,7 @@
 package com.viratech.cadastrocliente.model.mapper;
 
 import com.viratech.cadastrocliente.dto.UserCredentialRequestDTO;
+import com.viratech.cadastrocliente.dto.UserCredentialResponseDTO;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,6 +21,9 @@ public abstract class UserCredentialMapper {
     @Mapping(target = "username", source = "email")
     @Mapping(target = "password", source = "password", qualifiedByName = "encryptPassword")
     public abstract UserCredential toEntity(UserCredentialRequestDTO request);
+
+
+    public abstract UserCredentialResponseDTO toDTO(UserCredential user);
 
     @Named("encryptPassword")
     protected String encryptPassword(String password) {
