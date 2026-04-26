@@ -22,7 +22,8 @@ public abstract class UserCredentialMapper {
     @Mapping(target = "password", source = "password", qualifiedByName = "encryptPassword")
     public abstract UserCredential toEntity(UserCredentialRequestDTO request);
 
-
+    @Mapping(target = "email", source = "username")
+    @Mapping(target = "name", source = "user.name")
     public abstract UserCredentialResponseDTO toDTO(UserCredential user);
 
     @Named("encryptPassword")
