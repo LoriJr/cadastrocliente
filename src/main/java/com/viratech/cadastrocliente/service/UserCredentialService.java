@@ -7,12 +7,15 @@ import com.viratech.cadastrocliente.model.mapper.UserCredentialMapper;
 import com.viratech.cadastrocliente.repository.UserCredentialRepository;
 import com.viratech.cadastrocliente.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserCredentialService {
+public class UserCredentialService implements UserDetailsService {
 
     private final UserCredentialRepository userCredentialRepository;
     private final UserRepository userRepository;
@@ -30,7 +33,7 @@ public class UserCredentialService {
                 .orElseThrow(() -> new RuntimeException("e-mail not found"));
 
         // 2. Verificar se este usuário já possui uma credencial (evitar duplicidade)
-        if(userCredentialRepository.existsByUsername(request.email())){
+        if(userCredentialRepository.existsByUserEmail(request.email())){
             throw new RuntimeException("This username already");
         }
 
@@ -46,5 +49,11 @@ public class UserCredentialService {
 
         // 6. Retornar o DTO de resposta
         return userCredentialMapper.toDTO(save);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userCredentialRepository.findByUserEmail(username)
+                .orElseThrow(()-> new UsernameNotFoundException("User Not found"));
     }
 }

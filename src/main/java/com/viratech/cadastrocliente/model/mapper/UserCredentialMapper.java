@@ -18,11 +18,11 @@ public abstract class UserCredentialMapper {
 
     @Mapping(target= "id", ignore = true)
     @Mapping(target = "user", ignore = true)
-    @Mapping(target = "username", source = "email")
+    //@Mapping(target = "username", source = "email")
     @Mapping(target = "password", source = "password", qualifiedByName = "encryptPassword")
     public abstract UserCredential toEntity(UserCredentialRequestDTO request);
 
-    @Mapping(target = "email", source = "username")
+    @Mapping(target = "email", source = "user.email")
     @Mapping(target = "name", source = "user.name")
     public abstract UserCredentialResponseDTO toDTO(UserCredential user);
 

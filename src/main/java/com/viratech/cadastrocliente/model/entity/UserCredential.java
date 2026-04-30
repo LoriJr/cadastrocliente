@@ -19,13 +19,10 @@ import java.util.List;
 public class UserCredential implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String username;
-
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String password;
 
     @OneToOne
@@ -45,6 +42,6 @@ public class UserCredential implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getEmail();
     }
 }
