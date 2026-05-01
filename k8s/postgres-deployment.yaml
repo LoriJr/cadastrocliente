@@ -24,6 +24,9 @@ spec:
               value: postgres
             - name: POSTGRES_PASSWORD
               value: admin
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
           resources:
             requests:
               memory: "256Mi"
@@ -31,3 +34,7 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "300m"
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
