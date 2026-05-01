@@ -51,14 +51,11 @@ jobs:
           cluster_name: viratech-cluster-cadastrocliente
           location: southamerica-east1
 
-      - name: Aplicar PVC primeiro
-        run: kubectl apply -f k8s/postgres-pvc.yaml
-
-      - name: Aguardar PVC
-        run: kubectl wait --for=condition=Bound pvc/postgres-pvc --timeout=180s
-
       - name: Aplicar manifestos
         run: kubectl apply -f k8s/
+
+      - name: Aguardar Postgres
+        run: kubectl rollout status deployment/postgres
 
       - name: Atualizar imagem
         run: |
