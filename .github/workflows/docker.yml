@@ -30,21 +30,20 @@ jobs:
 #      - name: Push da imagem
 #        run: docker push ${{ secrets.DOCKER_USERNAME }}/cadastrocliente:latest
 
-      - name: Configurar docker para Artifact Registry
-        run: gcloud auth configure-docker southamerica-east1-docker.pkg.dev
-
-      - name: Build da imagem
-        run: | 
-          docker build -t southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-repo/app:latest .
-
-      - name: Push da imagem
-        run: |
-          docker push southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-repo/app:latest
-
       - name: Auth GCP
         uses: google-github-actions/auth@v2
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Configurar docker para Artifact Registry
+        run: gcloud auth configure-docker southamerica-east1-docker.pkg.dev
+      - name: Build da imagem
+        run: |
+          docker build -t southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-repo/app:${{ github.sha }} .
+
+      - name: Push da imagem
+        run: |
+          docker push southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-repo/app:${{ github.sha }}
 
       - name: Get GKE credentials
         uses: google-github-actions/get-gke-credentials@v2
@@ -52,7 +51,13 @@ jobs:
           cluster_name: viratech-cluster-cadastrocliente
           location: southamerica-east1
 
-      - name: Deploy no GKE
+      - name: Aplicar manifestos
+        run: kubectl apply -f k8s/
+
+      - name: Atualizar imagem
         run: |
           kubectl set image deployment/cadastrocliente \
-          cadastrocliente=${{ secrets.DOCKER_USERNAME }}/cadastrocliente:latest
+          cadastrocliente=southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-repo/app:${{ github.sha }}
+
+      - name: Aguardar rollout
+        run: kubectl rollout status deployment/cadastrocliente

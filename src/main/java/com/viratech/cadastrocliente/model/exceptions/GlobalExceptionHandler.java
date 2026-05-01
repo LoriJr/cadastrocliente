@@ -25,9 +25,9 @@ public class GlobalExceptionHandler {
     }
 
     private static final Map<String, ApiResponseError.ObjectError> CONSTRAINTS_MAPPING = Map.of(
-            "uk_user_email", new ApiResponseError.ObjectError("email", "error.email.violation"),
-            "uk_user_cpf", new ApiResponseError.ObjectError("cpf", "error.cpf.violation"),
-            "uk_user_rg", new ApiResponseError.ObjectError("rg", "error.rg.violation")
+            "uk_users_email", new ApiResponseError.ObjectError("email", "error.email.violation"),
+            "uk_users_cpf", new ApiResponseError.ObjectError("cpf", "error.cpf.violation"),
+            "uk_users_rg", new ApiResponseError.ObjectError("rg", "error.rg.violation")
     );
 
     public static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);

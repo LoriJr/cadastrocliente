@@ -13,8 +13,8 @@ spec:
         app: cadastrocliente
     spec:
       containers:
-        - name: app
-          image: southamerica-east1-docker.pkg.dev/viratech-1010/repository-new/cadastrocliente-app:v1
+        - name: cadastrocliente
+          image: southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-repo/cadastrocliente-app:v1
           ports:
             - containerPort: 8081
           env:

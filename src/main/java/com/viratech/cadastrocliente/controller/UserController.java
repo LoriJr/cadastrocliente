@@ -1,7 +1,7 @@
 package com.viratech.cadastrocliente.controller;
 
-import com.viratech.cadastrocliente.model.dto.UserRequestDTO;
-import com.viratech.cadastrocliente.model.dto.UserResponseDTO;
+import com.viratech.cadastrocliente.dto.UserRequestDTO;
+import com.viratech.cadastrocliente.dto.UserResponseDTO;
 import com.viratech.cadastrocliente.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

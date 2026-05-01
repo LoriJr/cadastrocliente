@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "users" , uniqueConstraints = {
-        @UniqueConstraint(name="uk_user_email", columnNames = "email"),
-        @UniqueConstraint(name="uk_user_cpf", columnNames = "cpf"),
-        @UniqueConstraint(name = "uk_user_rg",  columnNames = "rg")
+        @UniqueConstraint(name="uk_users_email", columnNames = "email"),
+        @UniqueConstraint(name="uk_users_cpf", columnNames = "cpf"),
+        @UniqueConstraint(name = "uk_users_rg",  columnNames = "rg")
 })
 
 public class User {
@@ -48,5 +48,8 @@ public class User {
 
     @Embedded
     private Address address;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserCredential credential;
 
 }

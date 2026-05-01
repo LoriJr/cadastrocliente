@@ -1,4 +1,4 @@
-package com.viratech.cadastrocliente.model.dto;
+package com.viratech.cadastrocliente.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
