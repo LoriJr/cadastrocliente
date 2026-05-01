@@ -24,9 +24,12 @@ spec:
               value: postgres
             - name: POSTGRES_PASSWORD
               value: admin
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+
           volumeMounts:
             - name: postgres-storage
-              mountPath: /var/lib/postgresql/data
+              mountPath: /var/lib/postgresql/data/pgdata
           resources:
             requests:
               memory: "256Mi"
