@@ -45,14 +45,19 @@ jobs:
         run: |
           docker push southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-repo/app:${{ github.sha }}
 
-
       - name: Get GKE credentials
         uses: google-github-actions/get-gke-credentials@v2
         with:
           cluster_name: viratech-cluster-cadastrocliente
           location: southamerica-east1
 
-      - name: Deploy no GKE
+      - name: Aplicar manifestos
+        run: kubectl apply -f k8s/
+
+      - name: Atualizar imagem
         run: |
           kubectl set image deployment/cadastrocliente \
           cadastrocliente=southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-repo/app:${{ github.sha }}
+
+      - name: Aguardar rollout
+        run: kubectl rollout status deployment/cadastrocliente
