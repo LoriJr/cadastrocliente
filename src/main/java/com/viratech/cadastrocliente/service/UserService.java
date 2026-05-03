@@ -34,21 +34,34 @@ public class UserService {
     @Transactional
     public UserResponseDTO userSave(UserRequestDTO request, Locale locale){
 
+        if(request == null){
+            throw new IllegalArgumentException("Request body must not be null");
+        }
+
+        List<User> conflicts = userRepository.findConflicts(
+                request.email(),
+                request.cpf(),
+                request.rg()
+        );
+
         List<ApiResponseError.ObjectError> errors = new ArrayList<>();
 
-        if(userRepository.existsByEmail(request.email())){
-            errors.add(new ApiResponseError.ObjectError("email",
-                    messageSource.getMessage("error.email.violation", null, locale)));
-        }
+        for (User user : conflicts) {
 
-        if(userRepository.existsByCpf(request.cpf())){
-            errors.add(new ApiResponseError.ObjectError("cpf",
-                    messageSource.getMessage("error.cpf.violation", null, locale)));
-        }
+            if (user.getEmail().equals(request.email())) {
+                errors.add(new ApiResponseError.ObjectError("email",
+                        getMessage("error.email.violation", locale)));
+            }
 
-        if(userRepository.existsByRg(request.rg())){
-            errors.add(new ApiResponseError.ObjectError("rg",
-                    messageSource.getMessage("error.rg.violation", null, locale)));
+            if (user.getCpf().equals(request.cpf())) {
+                errors.add(new ApiResponseError.ObjectError("cpf",
+                        getMessage("error.cpf.violation", locale)));
+            }
+
+            if (user.getRg().equals(request.rg())) {
+                errors.add(new ApiResponseError.ObjectError("rg",
+                        getMessage("error.rg.violation", locale)));
+            }
         }
 
         if(!errors.isEmpty()){
@@ -57,6 +70,10 @@ public class UserService {
 
         return userMapper.toResponseDTO(
                 userRepository.save(userMapper.toEntity(request)));
+    }
+
+    private String getMessage(String key, Locale locale){
+        return messageSource.getMessage(key, null, locale);
     }
 
     public List<UserResponseDTO> findAllUsers(){
