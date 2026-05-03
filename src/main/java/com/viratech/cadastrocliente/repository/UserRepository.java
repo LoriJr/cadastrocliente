@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             SELECT u FROM user u
             WHERE u.email = :email
                OR u.cpf = :cpf
-               OR u.rf = :rg
+               OR u.rg = :rg
             """)
-    List<User> findConflicts(String email, String cfp, String rg);
+    List<User> findConflicts(String email, String cpf, String rg);
 }
