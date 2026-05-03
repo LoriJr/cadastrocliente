@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void deleteByEmail(String email);
 
     @Query("""
-            SELECT u FROM user u
+            SELECT u FROM User u
             WHERE u.email = :email
                OR u.cpf = :cpf
                OR u.rg = :rg
