@@ -1,6 +1,7 @@
 package com.viratech.cadastrocliente.security;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,15 +14,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@AllArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class ConfigSecurity {
 
-    private static FilterAccessToken filterAccessToken;
+    private final FilterAccessToken filterAccessToken;
 
     @Bean
     public SecurityFilterChain filterSecurity(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .authorizeHttpRequests(
+                        req -> {req.requestMatchers("api/v1/auth/login").permitAll();
+                                req.anyRequest().authenticated();
+                        }
+                )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(filterAccessToken, UsernamePasswordAuthenticationFilter.class)
