@@ -1,6 +1,5 @@
 package com.viratech.cadastrocliente.security;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,18 +24,13 @@ public class ConfigSecurity {
     public SecurityFilterChain filterSecurity(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(
-                        req -> {req.requestMatchers("api/v1/auth/login").permitAll();
+                        req -> {req.requestMatchers("/api/v1/auth/login").permitAll();
                                 req.anyRequest().authenticated();
                         }
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(filterAccessToken, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                        })
-                )
                 .build();
     }
 

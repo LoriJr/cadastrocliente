@@ -108,6 +108,17 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(InvalidLoginException.class)
+    public ResponseEntity<ApiResponseError> handlerInvalidLogin(InvalidLoginException ex) {
+        return buildErrorResponse(
+                HttpStatus.UNAUTHORIZED,
+                "Unauthorized",
+                ex.getMessage(),
+                null
+        );
+    }
+
+
     private ResponseEntity<ApiResponseError> buildErrorResponse(HttpStatus status, String title, String message, List<ApiResponseError.ObjectError> errors){
         ApiResponseError error = new ApiResponseError(
                 status.value(),
