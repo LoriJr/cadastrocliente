@@ -1,8 +1,11 @@
 package com.viratech.cadastrocliente.authentication;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -23,11 +26,28 @@ public class TokenService {
                     .withExpiresAt(expires(30))
                     .sign(algorithm);
         } catch (JWTCreationException exception){
-            throw new RoleBusinessException("Error to create toke JWT!");
+            throw new RoleBusinessException("Error to create token!");
         }
     }
 
     private Instant expires(Integer timeExpiresAt){
         return LocalDateTime.now().plusMinutes(timeExpiresAt).toInstant(ZoneOffset.of("-03:00"));
+    }
+
+    public String verifyToken(String token){
+
+        DecodedJWT decodedJWT;
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            JWTVerifier verifier = JWT.require(algorithm)
+                    .withIssuer("auth0")
+                    .build();
+
+            decodedJWT = verifier.verify(token);
+            return decodedJWT.getSubject();
+
+        } catch (JWTVerificationException exception){
+            throw new RoleBusinessException("Error to validate token!");
+        }
     }
 }
