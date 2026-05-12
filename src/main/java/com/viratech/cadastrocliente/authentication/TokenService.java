@@ -28,6 +28,19 @@ public class TokenService {
         }
     }
 
+    public String createRefreshToken(UserCredential user){
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            return JWT.create()
+                    .withIssuer("auth0")
+                    .withSubject(user.getId().toString())
+                    .withExpiresAt(expires(60))
+                    .sign(algorithm);
+        } catch (JWTCreationException exception){
+            throw new RoleBusinessException("Error to create refresh token!");
+        }
+    }
+
     private Instant expires(Integer timeExpiresAt){
         return LocalDateTime.now().plusMinutes(timeExpiresAt).toInstant(ZoneOffset.of("-03:00"));
     }

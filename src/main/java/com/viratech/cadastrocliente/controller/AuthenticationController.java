@@ -4,6 +4,7 @@ import com.viratech.cadastrocliente.authentication.TokenService;
 import com.viratech.cadastrocliente.dto.UserCredentialRequestDTO;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
 import com.viratech.cadastrocliente.model.exceptions.InvalidLoginException;
+import com.viratech.cadastrocliente.security.DataToken;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,9 @@ public class AuthenticationController {
             var authentication = authenticationManager.authenticate(authenticationToken);
 
             String accessToken = tokenService.createToken((UserCredential) authentication.getPrincipal());
+            String refreshToken = tokenService.createRefreshToken((UserCredential) authentication.getPrincipal());
 
-            return ResponseEntity.ok(accessToken);
+            return ResponseEntity.ok(new DataToken(accessToken, refreshToken));
         } catch (AuthenticationException ex) {
             throw new InvalidLoginException("email or password invalid");
         }
