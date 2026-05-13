@@ -24,7 +24,7 @@ public class ConfigSecurity {
     public SecurityFilterChain filterSecurity(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(
-                        req -> {req.requestMatchers("/api/v1/auth/login").permitAll();
+                        req -> {req.requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh-token").permitAll();
                                 req.anyRequest().authenticated();
                         }
                 )

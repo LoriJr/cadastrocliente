@@ -1,6 +1,6 @@
 package com.viratech.cadastrocliente.security;
 
-public record DataToken(
+public record AuthToken(
         String accessToken,
         String refreshToken
 ) {
