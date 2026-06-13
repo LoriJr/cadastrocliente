@@ -18,6 +18,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller responsável pela autenticação de usuários e gerenciamento
+ * dos tokens de acesso da aplicação.
+ *
+ * <p>Disponibiliza endpoints para realização de login e renovação
+ * de tokens JWT utilizando refresh tokens.</p>
+ *
+ * @author Lou Junior
+ * @since 1.0
+ */
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/auth")

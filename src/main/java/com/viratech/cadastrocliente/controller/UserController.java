@@ -18,6 +18,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Controller responsável pelo gerenciamento dos usuários da plataforma.
+ *
+ * <p>Disponibiliza endpoints para cadastro, consulta, atualização e remoção
+ * de usuários, além da listagem de todos os registros cadastrados.</p>
+ *
+ * <p>As operações expostas por este controller utilizam DTOs para entrada
+ * e saída de dados, garantindo o desacoplamento entre a camada de API e
+ * as entidades de domínio da aplicação.</p>
+ *
+ * @author Lou Junior
+ * @since 1.0
+ */
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")

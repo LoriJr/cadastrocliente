@@ -11,6 +11,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+/**
+ * Controller responsável pelo gerenciamento/cadastro das credenciais de acesso dos usuários.
+ *
+ * <p>Disponibiliza endpoints para criação da senha de acesso de usuários
+ * previamente cadastrados na plataforma por meio de seu endereço de e-mail.</p>
+ *
+ * @author Lou Junior
+ * @since 1.0
+ */
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/auth")
