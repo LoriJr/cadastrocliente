@@ -32,7 +32,6 @@ import java.util.List;
  * @since 1.0
  */
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
