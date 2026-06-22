@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,8 +38,10 @@ public class ConfigSecurity {
         return httpSecurity
                 .cors(cors -> {})
                 .authorizeHttpRequests(
-                        req -> {req.requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh-token", "/users").permitAll();
-                                req.anyRequest().authenticated();
+                        req -> {
+                            req.requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh-token").permitAll();
+                            req.requestMatchers(HttpMethod.POST, "/users", "/api/v1/auth/register").permitAll();
+                            req.anyRequest().authenticated();
                         }
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
