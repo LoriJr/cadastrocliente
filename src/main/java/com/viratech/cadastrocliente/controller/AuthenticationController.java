@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,7 +52,14 @@ public class AuthenticationController {
             String refreshToken = tokenService.createRefreshToken((UserCredential) authentication.getPrincipal());
 
             return ResponseEntity.ok(new AuthToken(accessToken, refreshToken));
-        } catch (AuthenticationException ex) {
+        }
+        catch (DisabledException ex) {
+            throw new InvalidLoginException("User account is not active.");
+        }
+        catch (LockedException ex) {
+            throw new InvalidLoginException("User account is blocked.");
+        }
+        catch (AuthenticationException ex) {
             throw new InvalidLoginException("email or password invalid");
         }
     }

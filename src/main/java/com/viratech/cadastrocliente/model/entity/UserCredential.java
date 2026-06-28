@@ -1,5 +1,6 @@
 package com.viratech.cadastrocliente.model.entity;
 
+import com.viratech.cadastrocliente.model.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,5 +44,10 @@ public class UserCredential implements UserDetails {
     @Override
     public String getUsername() {
         return user.getEmail();
+    }
+
+    @Override
+    public boolean isEnabled(){
+        return user.getUserStatus() == UserStatus.ACTIVE;
     }
 }
