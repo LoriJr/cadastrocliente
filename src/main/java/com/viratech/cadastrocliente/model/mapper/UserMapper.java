@@ -21,6 +21,8 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "userStatus", ignore = true)
+    @Mapping(target = "verificationToken", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUser(UserRequestDTO dto, @MappingTarget User user);
 }

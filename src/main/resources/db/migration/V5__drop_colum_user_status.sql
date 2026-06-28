@@ -1,0 +1,2 @@
+ALTER TABLE user_verification_token
+DROP COLUMN user_status;

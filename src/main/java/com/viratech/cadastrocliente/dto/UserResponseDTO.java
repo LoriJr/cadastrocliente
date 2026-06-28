@@ -1,6 +1,7 @@
 package com.viratech.cadastrocliente.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record UserResponseDTO(
 
@@ -10,6 +11,7 @@ public record UserResponseDTO(
         String cpf,
         String rg,
         LocalDate birthDate,
-        AddressDTO address
+        AddressDTO address,
+        LocalDateTime createdAt
 ) {
 }

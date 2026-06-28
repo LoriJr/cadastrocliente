@@ -3,6 +3,8 @@ package com.viratech.cadastrocliente.service;
 import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.dto.UserResponseDTO;
+import com.viratech.cadastrocliente.model.entity.UserVerificationToken;
+import com.viratech.cadastrocliente.model.enums.UserStatus;
 import com.viratech.cadastrocliente.model.exceptions.ApiResponseError;
 import com.viratech.cadastrocliente.model.exceptions.CustomValidationException;
 import com.viratech.cadastrocliente.model.exceptions.ResourceNotFoundException;
@@ -15,9 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -68,8 +73,18 @@ public class UserService {
             throw new CustomValidationException(errors);
         }
 
-        return userMapper.toResponseDTO(
-                userRepository.save(userMapper.toEntity(request)));
+        User user = userMapper.toEntity(request);
+
+        user.setUserStatus(UserStatus.PENDING_VERIFICATION);
+
+        UserVerificationToken verificationToken = new UserVerificationToken();
+        verificationToken.setToken(UUID.randomUUID().toString());
+        verificationToken.setExpiration(LocalDateTime.now().plusMinutes(30));
+
+        verificationToken.setUser(user);
+        user.setVerificationToken(verificationToken);
+
+        return userMapper.toResponseDTO(user);
     }
 
     private String getMessage(String key, Locale locale){

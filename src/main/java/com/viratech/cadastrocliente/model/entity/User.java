@@ -1,5 +1,6 @@
 package com.viratech.cadastrocliente.model.entity;
 
+import com.viratech.cadastrocliente.model.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,5 +52,12 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserCredential credential;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserVerificationToken verificationToken;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private UserStatus userStatus;
 
 }
