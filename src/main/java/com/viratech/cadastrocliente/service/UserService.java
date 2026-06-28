@@ -1,5 +1,6 @@
 package com.viratech.cadastrocliente.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.dto.UserResponseDTO;
@@ -38,6 +39,8 @@ public class UserService {
 
     @Transactional
     public UserResponseDTO userSave(UserRequestDTO request, Locale locale){
+
+        String className = UserService.class.getSimpleName();
 
         if(request == null){
             throw new IllegalArgumentException("Request body must not be null");
@@ -84,7 +87,9 @@ public class UserService {
         verificationToken.setUser(user);
         user.setVerificationToken(verificationToken);
 
-        return userMapper.toResponseDTO(user);
+        log.info("[{}] [UserSave] Recebido dados do usuário {}", className, user);
+
+        return userMapper.toResponseDTO(userRepository.save((user)));
     }
 
     private String getMessage(String key, Locale locale){

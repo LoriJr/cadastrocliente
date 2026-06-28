@@ -58,6 +58,11 @@ public class UserController {
     @ApiResponse(responseCode = "409", description = "Email já cadastrado")
     @ApiResponse(responseCode = "500", description = "Erro no servidor")
     public ResponseEntity<UserResponseDTO> saveUser(@RequestBody @Valid UserRequestDTO requestDTO){
+
+        String className = UserController.class.getSimpleName();
+
+        log.info("[{}] Start flow [saveUser]", className);
+
         UserResponseDTO userResponseDTO = userService.userSave(requestDTO, null);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
