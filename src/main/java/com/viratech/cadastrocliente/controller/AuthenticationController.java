@@ -54,7 +54,7 @@ public class AuthenticationController {
             return ResponseEntity.ok(new AuthToken(accessToken, refreshToken));
         }
         catch (DisabledException ex) {
-            throw new InvalidLoginException("User account is not active.");
+            throw new InvalidLoginException("Account pending email verification.");
         }
         catch (LockedException ex) {
             throw new InvalidLoginException("User account is blocked.");
@@ -74,6 +74,16 @@ public class AuthenticationController {
 
             String accessToken = tokenService.createToken(user.orElseThrow());
             String refreshToken = tokenService.createRefreshToken(user.orElseThrow());
+
+            UserCredential credential = user.orElseThrow();
+
+            if (!credential.isEnabled()) {
+                throw new DisabledException("Account disabled");
+            }
+
+            if (!credential.isAccountNonLocked()) {
+                throw new LockedException("Account locked");
+            }
 
             return ResponseEntity.ok(new AuthToken(accessToken, refreshToken));
         } catch (AuthenticationException ex) {
