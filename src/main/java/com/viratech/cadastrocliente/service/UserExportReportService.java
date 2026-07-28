@@ -3,17 +3,14 @@ package com.viratech.cadastrocliente.service;
 import com.viratech.cadastrocliente.dto.UserExportDTO;
 import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
-import com.viratech.cadastrocliente.repository.UserRepository;
+import com.viratech.cadastrocliente.repository.UserExportReportRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.BufferedWriter;
@@ -26,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class UserExportReportService {
 
-    private final UserExportRepository exportRepository;
+    private final UserExportReportRepository exportRepository;
     private final UserMapper userMapper;
     private final TransactionTemplate transactionTemplate;
 
@@ -38,7 +35,6 @@ public class UserExportReportService {
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.ISO_8859_1))){
 
             final int[] pageNumber = {0};
-//            Page<User> page;
             boolean nextPage;
 
             writer.write("name;email;phone;cpf;rg;birth_date;created_at;address_line1;number;address_line2;neighborhood;zip_code;city;state");

@@ -1,9 +1,7 @@
-package com.viratech.cadastrocliente.service;
+package com.viratech.cadastrocliente.repository;
 
 import com.viratech.cadastrocliente.model.entity.User;
-import com.viratech.cadastrocliente.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
@@ -12,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class UserExportRepository {
+public class UserExportReportRepository {
 
     private final UserRepository userRepository;
 
