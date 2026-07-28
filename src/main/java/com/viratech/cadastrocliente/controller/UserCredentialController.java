@@ -3,6 +3,7 @@ package com.viratech.cadastrocliente.controller;
 import com.viratech.cadastrocliente.dto.UserCredentialRequestDTO;
 import com.viratech.cadastrocliente.dto.UserCredentialResponseDTO;
 import com.viratech.cadastrocliente.service.UserCredentialService;
+import com.viratech.cadastrocliente.service.UserVerificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import java.net.URI;
 public class UserCredentialController {
 
     private final UserCredentialService credentialService;
+    private final UserVerificationService verificationService;
 
     @PostMapping("/register")
     public ResponseEntity<UserCredentialResponseDTO> saveCredential(@RequestBody @Valid UserCredentialRequestDTO request){
@@ -38,5 +40,13 @@ public class UserCredentialController {
                 .buildAndExpand(response.email())
                 .toUri();
         return ResponseEntity.created(uri).body(response);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyEmail(@RequestParam String token){
+
+        verificationService.verifyEmail(token);
+
+        return ResponseEntity.ok("Conta ativada com sucesso");
     }
 }

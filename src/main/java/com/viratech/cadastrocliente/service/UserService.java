@@ -1,9 +1,8 @@
 package com.viratech.cadastrocliente.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.dto.UserResponseDTO;
+import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.entity.UserVerificationToken;
 import com.viratech.cadastrocliente.model.enums.UserStatus;
 import com.viratech.cadastrocliente.model.exceptions.ApiResponseError;
@@ -12,13 +11,13 @@ import com.viratech.cadastrocliente.model.exceptions.ResourceNotFoundException;
 import com.viratech.cadastrocliente.model.mapper.AddressMapper;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
 import com.viratech.cadastrocliente.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +33,12 @@ public class UserService {
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
     private final MessageSource messageSource;
+    private final EmailService emailService;
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Transactional
-    public UserResponseDTO userSave(UserRequestDTO request, Locale locale){
+    public UserResponseDTO userSave(UserRequestDTO request, Locale locale) throws MessagingException {
 
         String className = UserService.class.getSimpleName();
 
@@ -89,7 +89,11 @@ public class UserService {
 
         log.info("[{}] [UserSave] Recebido dados do usuário {}", className, user);
 
-        return userMapper.toResponseDTO(userRepository.save((user)));
+        userRepository.save(user);
+
+        emailService.sendVerificationEmail(user);
+
+        return userMapper.toResponseDTO(user);
     }
 
     private String getMessage(String key, Locale locale){

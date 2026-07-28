@@ -6,6 +6,7 @@ import com.viratech.cadastrocliente.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class UserController {
     @ApiResponse(responseCode = "201", description = "Usuário salvo com sucesso")
     @ApiResponse(responseCode = "409", description = "Email já cadastrado")
     @ApiResponse(responseCode = "500", description = "Erro no servidor")
-    public ResponseEntity<UserResponseDTO> saveUser(@RequestBody @Valid UserRequestDTO requestDTO){
+    public ResponseEntity<UserResponseDTO> saveUser(@RequestBody @Valid UserRequestDTO requestDTO) throws MessagingException {
 
         String className = UserController.class.getSimpleName();
 
