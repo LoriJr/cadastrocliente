@@ -6,6 +6,7 @@ import com.viratech.cadastrocliente.dto.UserRoleRequest;
 import com.viratech.cadastrocliente.dto.UserRoleResponse;
 import com.viratech.cadastrocliente.service.UserCredentialService;
 import com.viratech.cadastrocliente.service.UserVerificationService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class UserCredentialController {
     private final UserVerificationService verificationService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserCredentialResponseDTO> saveCredential(@RequestBody @Valid UserCredentialRequestDTO request){
+    public ResponseEntity<UserCredentialResponseDTO> saveCredential(@RequestBody @Valid UserCredentialRequestDTO request) throws MessagingException {
 
         UserCredentialResponseDTO response = credentialService.saveUserCredential(request);
 

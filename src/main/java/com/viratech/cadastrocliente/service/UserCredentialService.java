@@ -12,6 +12,7 @@ import com.viratech.cadastrocliente.model.mapper.UserCredentialMapper;
 import com.viratech.cadastrocliente.repository.RoleRepository;
 import com.viratech.cadastrocliente.repository.UserCredentialRepository;
 import com.viratech.cadastrocliente.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,8 +29,9 @@ public class UserCredentialService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserCredentialMapper userCredentialMapper;
     private final RoleRepository roleRepository;
+    private final EmailService emailService;
 
-    public UserCredentialResponseDTO saveUserCredential(UserCredentialRequestDTO request){
+    public UserCredentialResponseDTO saveUserCredential(UserCredentialRequestDTO request) throws MessagingException {
 
         if(request == null){
             throw new IllegalArgumentException("Credentials not be null");
@@ -47,6 +49,8 @@ public class UserCredentialService implements UserDetailsService {
         // 3. Converter DTO para Entity
         // O Mapper já injeta o PasswordEncoder e faz o encode automaticamente!
         UserCredential userCredential = userCredentialMapper.toEntity(request);
+
+        emailService.sendVerificationEmail(user);
 
         // 4. VINCULAR O USUÁRIO (Obrigatório por causa do @MapsId)
         userCredential.setUser(user);
