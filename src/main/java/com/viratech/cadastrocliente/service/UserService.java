@@ -33,8 +33,6 @@ public class UserService {
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
     private final MessageSource messageSource;
-    private final EmailService emailService;
-
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Transactional
@@ -90,8 +88,6 @@ public class UserService {
         log.info("[{}] [UserSave] Recebido dados do usuário {}", className, user);
 
         userRepository.save(user);
-
-        emailService.sendVerificationEmail(user);
 
         return userMapper.toResponseDTO(user);
     }

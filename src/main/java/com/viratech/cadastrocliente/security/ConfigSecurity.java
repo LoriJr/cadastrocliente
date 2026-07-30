@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,6 +44,12 @@ public class ConfigSecurity {
                             req.requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh-token").permitAll();
                             req.requestMatchers(HttpMethod.POST, "/users", "/api/v1/auth/register").permitAll();
                             req.requestMatchers(HttpMethod.GET, "/api/v1/auth/verify").permitAll();
+
+                            req.requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN");
+                            req.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN");
+                            req.requestMatchers(HttpMethod.PATCH, "/add-role/**").hasRole("ADMIN");
+
+
                             req.anyRequest().authenticated();
                         }
                 )
@@ -76,5 +84,11 @@ public class ConfigSecurity {
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy(){
+        String hierarchy = "ROLE_ADMIN > ROLE_USER";
+        return RoleHierarchyImpl.fromHierarchy(hierarchy);
     }
 }

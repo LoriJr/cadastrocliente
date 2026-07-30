@@ -2,8 +2,11 @@ package com.viratech.cadastrocliente.controller;
 
 import com.viratech.cadastrocliente.dto.UserCredentialRequestDTO;
 import com.viratech.cadastrocliente.dto.UserCredentialResponseDTO;
+import com.viratech.cadastrocliente.dto.UserRoleRequest;
+import com.viratech.cadastrocliente.dto.UserRoleResponse;
 import com.viratech.cadastrocliente.service.UserCredentialService;
 import com.viratech.cadastrocliente.service.UserVerificationService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +34,7 @@ public class UserCredentialController {
     private final UserVerificationService verificationService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserCredentialResponseDTO> saveCredential(@RequestBody @Valid UserCredentialRequestDTO request){
+    public ResponseEntity<UserCredentialResponseDTO> saveCredential(@RequestBody @Valid UserCredentialRequestDTO request) throws MessagingException {
 
         UserCredentialResponseDTO response = credentialService.saveUserCredential(request);
 
@@ -40,6 +43,12 @@ public class UserCredentialController {
                 .buildAndExpand(response.email())
                 .toUri();
         return ResponseEntity.created(uri).body(response);
+    }
+
+    @PatchMapping("/add-role/user/{id}")
+    public ResponseEntity<UserRoleResponse> addRole(@PathVariable Long id, @RequestBody @Valid UserRoleRequest request){
+        UserRoleResponse response = credentialService.addRole(id, request);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/verify")
