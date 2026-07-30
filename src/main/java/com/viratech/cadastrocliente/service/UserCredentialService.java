@@ -2,22 +2,23 @@ package com.viratech.cadastrocliente.service;
 
 import com.viratech.cadastrocliente.dto.UserCredentialRequestDTO;
 import com.viratech.cadastrocliente.dto.UserCredentialResponseDTO;
+import com.viratech.cadastrocliente.dto.UserRoleRequest;
+import com.viratech.cadastrocliente.dto.UserRoleResponse;
 import com.viratech.cadastrocliente.model.entity.Role;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
 import com.viratech.cadastrocliente.model.enums.RoleName;
+import com.viratech.cadastrocliente.model.exceptions.ResourceNotFoundException;
 import com.viratech.cadastrocliente.model.mapper.UserCredentialMapper;
 import com.viratech.cadastrocliente.repository.RoleRepository;
 import com.viratech.cadastrocliente.repository.UserCredentialRepository;
 import com.viratech.cadastrocliente.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -60,6 +61,32 @@ public class UserCredentialService implements UserDetailsService {
 
         // 6. Retornar o DTO de resposta
         return userCredentialMapper.toDTO(save);
+    }
+
+    @Transactional
+    public UserRoleResponse addRole(Long id, UserRoleRequest request){
+        if( id == null){
+            throw new IllegalArgumentException("Id has been not null");
+        }
+        if(request == null){
+            throw new IllegalArgumentException("roleName has been not null");
+        }
+
+        UserCredential user = userCredentialRepository.findById(id)
+                .orElseThrow(()->
+                        new ResourceNotFoundException("User not found."));
+
+        Role role = roleRepository.findByRoleName(request.roleName())
+                .orElseThrow(()->
+                        new EntityNotFoundException("Role not found."));
+
+        if(user.getRoles().contains(role)){
+            throw new IllegalStateException("User already has this role.");
+        }
+
+        user.getRoles().add(role);
+
+        return userCredentialMapper.toRoleResponse(user);
     }
 
     @Override
