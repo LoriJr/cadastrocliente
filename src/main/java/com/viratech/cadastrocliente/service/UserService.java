@@ -145,7 +145,7 @@ public class UserService {
 
     public Page<UserResponseDTO> getAllUsersPage(Pageable pageable){
 
-        Page<User> users = userRepository.getAllUsersPage(pageable);
+        Page<User> users = userRepository.findAll(pageable);
         return users.map(userMapper::toResponseDTO);
     }
 }

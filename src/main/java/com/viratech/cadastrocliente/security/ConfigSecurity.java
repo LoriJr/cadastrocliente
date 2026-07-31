@@ -46,6 +46,7 @@ public class ConfigSecurity {
                             req.requestMatchers(HttpMethod.GET, "/api/v1/auth/verify").permitAll();
 
                             req.requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN");
+                            req.requestMatchers(HttpMethod.GET, "/users/page/**").hasRole("ADMIN");
                             req.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN");
                             req.requestMatchers(HttpMethod.PATCH, "/add-role/**").hasRole("ADMIN");
 
