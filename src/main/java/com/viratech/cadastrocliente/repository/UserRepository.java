@@ -1,6 +1,10 @@
 package com.viratech.cadastrocliente.repository;
 
+import com.viratech.cadastrocliente.dto.UserResponseDTO;
 import com.viratech.cadastrocliente.model.entity.User;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -22,4 +26,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
                OR u.rg = :rg
             """)
     List<User> findConflicts(String email, String cpf, String rg);
+
+    Page<User> getAllUsersPage(Pageable pageable);
 }

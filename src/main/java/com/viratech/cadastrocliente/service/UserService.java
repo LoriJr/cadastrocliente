@@ -16,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -138,5 +141,11 @@ public class UserService {
         log.info("[updateUser] {}", dto.address());
 
         return userMapper.toResponseDTO(userRepository.save(user));
+    }
+
+    public Page<UserResponseDTO> getAllUsersPage(Pageable pageable){
+
+        Page<User> users = userRepository.getAllUsersPage(pageable);
+        return users.map(userMapper::toResponseDTO);
     }
 }

@@ -12,6 +12,8 @@ import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +53,11 @@ public class UserController {
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     public ResponseEntity<List<UserResponseDTO>> findUsers(){
         return ResponseEntity.ok(userService.findAllUsers());
+    }
+
+    @GetMapping("/page")
+    public Page<UserResponseDTO> getAllUsersPage(Pageable pageable){
+        return userService.getAllUsersPage(pageable);
     }
 
     @PostMapping
