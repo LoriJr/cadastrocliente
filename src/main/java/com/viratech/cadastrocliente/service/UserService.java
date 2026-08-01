@@ -2,6 +2,9 @@ package com.viratech.cadastrocliente.service;
 
 import com.viratech.cadastrocliente.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.dto.UserResponseDTO;
+import com.viratech.cadastrocliente.dto.UserRoleProjection;
+import com.viratech.cadastrocliente.dto.UserRoleResponseDTO;
+import com.viratech.cadastrocliente.model.entity.Role;
 import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.entity.UserVerificationToken;
 import com.viratech.cadastrocliente.model.enums.UserStatus;
@@ -22,10 +25,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -147,5 +148,24 @@ public class UserService {
 
         Page<User> users = userRepository.findAll(pageable);
         return users.map(userMapper::toResponseDTO);
+    }
+
+    public Page<UserRoleProjection> getUserRoleProjection(Pageable pageable){
+        return userRepository.findUsersWithRoles(pageable);
+    }
+
+    public Page<UserRoleResponseDTO> getUsersPage(Pageable pageable){
+        return userRepository.findAll(pageable)
+                .map(user -> new UserRoleResponseDTO(
+                        user.getName(),
+                        user.getEmail(),
+                        user.getCreatedAt(),
+                        user.getCredential() != null ? user.getCredential()
+                                .getRoles()
+                                .stream()
+                                .map(Role::getRoleName)
+                                .collect(Collectors.toSet())
+                                : Set.of()
+                ));
     }
 }

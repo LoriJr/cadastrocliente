@@ -2,6 +2,8 @@ package com.viratech.cadastrocliente.controller;
 
 import com.viratech.cadastrocliente.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.dto.UserResponseDTO;
+import com.viratech.cadastrocliente.dto.UserRoleProjection;
+import com.viratech.cadastrocliente.dto.UserRoleResponseDTO;
 import com.viratech.cadastrocliente.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
 import java.util.List;
 
@@ -58,6 +61,16 @@ public class UserController {
     @GetMapping("/page")
     public Page<UserResponseDTO> getAllUsersPage(Pageable pageable){
         return userService.getAllUsersPage(pageable);
+    }
+
+    @GetMapping("/role")
+    public Page<UserRoleResponseDTO> getAllUsersRolePage(Pageable pageable){
+        return userService.getUsersPage(pageable);
+    }
+
+    @GetMapping("/role-projection")
+    public Page<UserRoleProjection> getAllUsersRoleProjectionPage(Pageable pageable){
+        return userService.getUserRoleProjection(pageable);
     }
 
     @PostMapping
@@ -117,4 +130,6 @@ public class UserController {
         userService.deleteUserByEmail(email);
         return ResponseEntity.noContent().build();
     }
+
+
 }
