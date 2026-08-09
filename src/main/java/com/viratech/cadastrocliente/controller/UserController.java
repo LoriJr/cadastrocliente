@@ -1,10 +1,8 @@
 package com.viratech.cadastrocliente.controller;
 
-import com.viratech.cadastrocliente.dto.UserRequestDTO;
-import com.viratech.cadastrocliente.dto.UserResponseDTO;
-import com.viratech.cadastrocliente.dto.UserRoleProjection;
-import com.viratech.cadastrocliente.dto.UserRoleResponseDTO;
+import com.viratech.cadastrocliente.dto.*;
 import com.viratech.cadastrocliente.service.UserService;
+import com.viratech.cadastrocliente.specification.UserSpecification;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -54,12 +52,13 @@ public class UserController {
 
     /**
      * Retorna os usuários de forma paginada. * * <p>O parâmetro {@code page} começa em zero. Por exemplo, * {@code page=0&size=20} retorna os primeiros 20 registros.</p> * * @param pageable parâmetros de paginação e ordenação * @return página contendo os usuários encontrados
+     * pode usar filtros de busca pelo name, cpf, id e email
      */
     @GetMapping("/page")
     @Operation(summary = "Lista usuários de forma paginada", description = "Retorna os usuários utilizando paginação e ordenação.")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Página de usuários retornada com sucesso"), @ApiResponse(responseCode = "500", description = "Erro interno no servidor")})
-    public Page<UserResponseDTO> getAllUsersPage(@ParameterObject Pageable pageable) {
-        return userService.getAllUsersPage(pageable);
+    public Page<UserResponseDTO> getAllUsersPage(@ParameterObject UserFilterRequest filter, Pageable pageable) {
+        return userService.getAllUsersPage(filter, pageable);
     }
 
     /**

@@ -1,9 +1,6 @@
 package com.viratech.cadastrocliente.service;
 
-import com.viratech.cadastrocliente.dto.UserRequestDTO;
-import com.viratech.cadastrocliente.dto.UserResponseDTO;
-import com.viratech.cadastrocliente.dto.UserRoleProjection;
-import com.viratech.cadastrocliente.dto.UserRoleResponseDTO;
+import com.viratech.cadastrocliente.dto.*;
 import com.viratech.cadastrocliente.model.entity.Role;
 import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.entity.UserVerificationToken;
@@ -14,6 +11,7 @@ import com.viratech.cadastrocliente.model.exceptions.ResourceNotFoundException;
 import com.viratech.cadastrocliente.model.mapper.AddressMapper;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
 import com.viratech.cadastrocliente.repository.UserRepository;
+import com.viratech.cadastrocliente.specification.UserSpecification;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -144,9 +142,9 @@ public class UserService {
         return userMapper.toResponseDTO(userRepository.save(user));
     }
 
-    public Page<UserResponseDTO> getAllUsersPage(Pageable pageable){
+    public Page<UserResponseDTO> getAllUsersPage(UserFilterRequest filter, Pageable pageable){
 
-        Page<User> users = userRepository.findAll(pageable);
+        Page<User> users = userRepository.findAll(UserSpecification.withFilter(filter), pageable);
         return users.map(userMapper::toResponseDTO);
     }
 
