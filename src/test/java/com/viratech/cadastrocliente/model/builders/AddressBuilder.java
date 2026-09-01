@@ -1,5 +1,6 @@
 package com.viratech.cadastrocliente.model.builders;
 
+import com.viratech.cadastrocliente.dto.AddressDTO;
 import com.viratech.cadastrocliente.model.entity.Address;
 
 public class AddressBuilder {
@@ -15,11 +16,11 @@ public class AddressBuilder {
 
     public static AddressBuilder aAddress(){
         AddressBuilder builder = new AddressBuilder();
-        defaultParams(builder);
+        setDefaultValues(builder);
         return builder;
     }
 
-    private static void defaultParams(AddressBuilder builder) {
+    private static void setDefaultValues(AddressBuilder builder) {
         builder.zipCode = "09781220";
         builder.addressLine1 = "Rua Tiradentes";
         builder.number = "100";
@@ -74,4 +75,17 @@ public class AddressBuilder {
                 city,
                 state);
     }
+
+    public AddressDTO nowDTO() {
+        return new AddressDTO(
+                zipCode,
+                addressLine1,
+                number,
+                addressLine2,
+                neighborhood,
+                city,
+                state);
+    }
+
+
 }

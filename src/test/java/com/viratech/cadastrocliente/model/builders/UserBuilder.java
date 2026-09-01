@@ -42,7 +42,7 @@ public class UserBuilder {
         builder.address = AddressBuilder.aAddress().now();
         builder.createdAt = LocalDateTime.now();
         builder.verificationToken = null;
-        builder.userCredential = null; //TODO adicionar builder
+        builder.userCredential = UserCredentialBuilder.aUserCredential().now(); //TODO adicionar builder
         builder.userStatus = UserStatus.PENDING_VERIFICATION;
     }
 
