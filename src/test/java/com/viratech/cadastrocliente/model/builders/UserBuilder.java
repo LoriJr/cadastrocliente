@@ -34,9 +34,9 @@ public class UserBuilder {
     private static void setDefaultValues(UserBuilder builder) {
         builder.id = 1L;
         builder.name = "Usuario Valido";
-        builder.email = "email@email";
+        builder.email = "usuario@email";
         builder.phone = "11911112222";
-        builder.cpf = "32112345678";
+        builder.cpf = "32260000800";
         builder.rg = "424284251";
         builder.birthDate = LocalDate.of(1990, 1, 1);
         builder.address = AddressBuilder.aAddress().now();

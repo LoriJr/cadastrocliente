@@ -16,7 +16,7 @@ public class UserRequestDtoBuilder {
 
     private UserRequestDtoBuilder(){}
 
-    public static UserRequestDtoBuilder umUserRequestDTO() {
+    public static UserRequestDtoBuilder aUserRequestDTO() {
         UserRequestDtoBuilder builder = new UserRequestDtoBuilder();
         setDefaultValues(builder);
         return builder;
@@ -24,9 +24,9 @@ public class UserRequestDtoBuilder {
 
     private static void setDefaultValues(UserRequestDtoBuilder builder) {
         builder.name = "Usuario Valido";
-        builder.email = "email@email";
+        builder.email = "usuario@email.com";
         builder.phone = "11911112222";
-        builder.cpf = "12332165478";
+        builder.cpf = "52998224725";
         builder.rg = "424214181";
         builder.birthDate = LocalDate.of(1995, 1, 1);
         builder.address = AddressBuilder.aAddress().nowDTO();
