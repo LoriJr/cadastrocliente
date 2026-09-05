@@ -42,7 +42,7 @@ public class UserRequesDTOTest {
     }
 
     @ParameterizedTest(name = "{5}")
-    @MethodSource("dataProvider")
+    @MethodSource("dataProviderBlankValues")
     @DisplayName("Deve Validar Campos @NotBlank")
     public void shouldValidateFieldBlank(String name, String email, String phone, String cpf, String rg, String fieldMessage) {
 
@@ -59,16 +59,13 @@ public class UserRequesDTOTest {
         Set<ConstraintViolation<UserRequestDTO>> violations =
                 validator.validate(requestDTO);
 
-        assertThat(violations.stream()
+        assertThat(violations)
                         .anyMatch(v ->
                                 v.getPropertyPath().toString().equals(fieldMessage)
-                        )
         );
-//        var violat = validator.validateProperty(requestDTO, "email");
-//        assertThat(violat).isNotEmpty();
     }
 
-    private static Stream<Arguments> dataProvider() {
+    private static Stream<Arguments> dataProviderBlankValues() {
 
         return Stream.of(
                 Arguments.of(null, "usuario@email.com", "11911112222", "52998224725", "424214181", "name null"),
@@ -91,6 +88,17 @@ public class UserRequesDTOTest {
                 Arguments.of("Usuario Valido", "usuario@email.com", "11911112222", "52998224725", "", "rg empty"),
                 Arguments.of("Usuario Valido", "usuario@email.com", "11911112222", "52998224725", " ", "rg blank")
         );
+    }
+
+    @Test
+    @DisplayName("Deve validar campos @NotNull")
+    public void shouldValidateFieldNull(){
+
+        UserRequestDTO requestDTO = UserRequestDtoBuilder.aUserRequestDTO().birthDate(null).now();
+
+        Set<ConstraintViolation<UserRequestDTO>> violations = validator.validate(requestDTO);
+
+        assertThat(violations).anyMatch(v-> v.getPropertyPath().toString().equals("birthDate"));
     }
 
 }
