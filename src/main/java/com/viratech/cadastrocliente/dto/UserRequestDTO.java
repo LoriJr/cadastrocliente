@@ -31,6 +31,7 @@ public record UserRequestDTO (
         @Past
         LocalDate birthDate,
 
+        @NotNull
         @Valid
         AddressDTO address
 ){
