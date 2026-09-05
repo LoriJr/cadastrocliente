@@ -120,6 +120,45 @@ public class UserRequesDTOTest {
                 Arguments.of(null, AddressBuilder.aAddress().nowDTO(), "birthDate", "birthDate Null"),
                 Arguments.of(LocalDate.of(1900, 1, 1), null, "address", "address Null"));
     }
+
+    @ParameterizedTest(name = "{6}")
+    @MethodSource("invalidFieldsProvider")
+    @DisplayName("Deve falhar a validação ao receber dados incorretos")
+    public void shouldValidateInvalidFields(String email, String phone, String cpf, String rg, LocalDate birthDate, String fieldName, String message) {
+
+        UserRequestDTO requestDTO = aUserRequestDTO()
+                .email(email)
+                .phone(phone)
+                .cpf(cpf)
+                .rg(rg)
+                .birthDate(birthDate).now();
+
+
+        Set<ConstraintViolation<UserRequestDTO>> violations = validator.validate(requestDTO);
+
+        // Garante que encontrou pelo menos uma violação no campo esperado
+        assertThat(violations)
+                .anyMatch(v -> v.getPropertyPath().toString().equals(fieldName));
+    }
+
+    public static Stream<Arguments> invalidFieldsProvider() {
+        return Stream.of(
+                // E-mail inválido
+                Arguments.of("email-invalido.com", "+5511988887777", "11144477735", "12.345.678-9", LocalDate.of(1980, 1,1), "email", "invalid email"),
+
+                // Telefone fora do padrão do @Pattern
+                Arguments.of("emailvalido@gmail.com", "+5511988887", "11144477735", "12.345.678-9", LocalDate.of(1980, 1,1), "phone", "invalid phone"),
+
+                // CPF inválido
+                Arguments.of("email-invalido.com", "+5511988887777", "1114447773", "12.345.678-9", LocalDate.of(1980, 1,1), "cpf", "invalid cpf"),
+
+                // RG inválido
+                Arguments.of("email-invalido.com", "+5511988887777", "11144477735", "12.345.67", LocalDate.of(1980, 1,1), "rg", "invalid rg"),
+
+                //birthDate com data futura
+                Arguments.of("email-invalido.com", "+5511988887777", "11144477735", "12.345.67", LocalDate.of(2027, 1,1), "birthDate", "invalid birthDate")
+        );
+    }
 }
 
 
