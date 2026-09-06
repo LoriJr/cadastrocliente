@@ -1,9 +1,8 @@
 package com.viratech.cadastrocliente.service;
 
-import com.viratech.cadastrocliente.dto.AddressDTO;
 import com.viratech.cadastrocliente.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.dto.UserResponseDTO;
-import com.viratech.cadastrocliente.model.builders.AddressBuilder;
+import com.viratech.cadastrocliente.model.builders.UserResponseDtoBuilder;
 import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.enums.UserStatus;
 import com.viratech.cadastrocliente.model.mapper.AddressMapper;
@@ -17,14 +16,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import static com.viratech.cadastrocliente.model.builders.UserRequestDtoBuilder.aUserRequestDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,7 +44,8 @@ public class UserServiceTest {
     @DisplayName("Deve salvar o usuário no banco")
     void shouldSaveUser() throws MessagingException {
 
-        UserRequestDTO request = createRequest();
+        UserRequestDTO request = aUserRequestDTO().now();
+        UserResponseDTO response = UserResponseDtoBuilder.umUserResponseDTO().now();
 
         User user = new User();
 
@@ -64,7 +62,7 @@ public class UserServiceTest {
                 .thenReturn(user);
 
         when(userMapper.toResponseDTO(user))
-                .thenReturn(createResponse());
+                .thenReturn(response);
 
         service.userSave(request, Locale.of("pt", "BR"));
 
@@ -75,7 +73,8 @@ public class UserServiceTest {
     @DisplayName("Deve definir o status PENDING_VERIFICATION")
     void shouldSetPendingVerificationStatus() throws MessagingException {
 
-        UserRequestDTO request = createRequest();
+        UserRequestDTO request = aUserRequestDTO().now();
+        UserResponseDTO response = UserResponseDtoBuilder.umUserResponseDTO().now();
 
         User user = new User();
 
@@ -92,52 +91,10 @@ public class UserServiceTest {
                 .thenReturn(user);
 
         when(userMapper.toResponseDTO(user))
-                .thenReturn(createResponse());
+                .thenReturn(response);
 
         service.userSave(request, Locale.US);
 
         assertEquals(UserStatus.PENDING_VERIFICATION, user.getUserStatus());
     }
-
-    private UserRequestDTO createRequest() {
-
-        AddressDTO dto = addressMapper.toDTO(AddressBuilder.aAddress().now());
-
-
-        return new UserRequestDTO(
-                "Junior Oliveira",
-                "junior@email.com",
-                "(11) 99999-9999",
-                "32260000800",
-                "424188661",
-                LocalDate.of(1985, 1, 29),
-                dto
-        );
-    }
-
-    private UserResponseDTO createResponse() {
-
-        AddressDTO address = new AddressDTO(
-                "09781220",
-                "Rua Tiradentes",
-                "1963",
-                "Bloco 4 ap 31",
-                "Ferrazópolis",
-                "São Bernardo do Campo",
-                "SP"
-        );
-
-        return new UserResponseDTO(
-                1L,
-                "Junior Oliveira",
-                "junior@email.com",
-                "32260000800",
-                "424188661",
-                LocalDate.of(1985, 1, 29),
-                address,
-                LocalDateTime.now()
-        );
-
-    }
-
 }
