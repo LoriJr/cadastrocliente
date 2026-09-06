@@ -9,6 +9,7 @@ import com.viratech.cadastrocliente.model.mapper.AddressMapper;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
 import com.viratech.cadastrocliente.repository.UserRepository;
 import jakarta.mail.MessagingException;
+import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +23,7 @@ import java.util.Locale;
 
 import static com.viratech.cadastrocliente.model.builders.UserRequestDtoBuilder.aUserRequestDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +44,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Deve salvar o usuário no banco")
-    void shouldSaveUser() throws MessagingException {
+    public void shouldSaveUser() throws MessagingException {
 
         UserRequestDTO request = aUserRequestDTO().now();
         UserResponseDTO response = UserResponseDtoBuilder.umUserResponseDTO().now();
@@ -71,7 +73,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Deve definir o status PENDING_VERIFICATION")
-    void shouldSetPendingVerificationStatus() throws MessagingException {
+    public void shouldSetPendingVerificationStatus() throws MessagingException {
 
         UserRequestDTO request = aUserRequestDTO().now();
         UserResponseDTO response = UserResponseDtoBuilder.umUserResponseDTO().now();
@@ -96,5 +98,17 @@ public class UserServiceTest {
         service.userSave(request, Locale.US);
 
         assertEquals(UserStatus.PENDING_VERIFICATION, user.getUserStatus());
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção em caso de request Null")
+    public void shouldExceptionRequestNull(){
+
+        UserRequestDTO requestDTO = null;
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                ()-> service.userSave(requestDTO, Locale.of("pt", "BR")));
+
+        assertEquals("Request body must not be null", ex.getMessage());
     }
 }
