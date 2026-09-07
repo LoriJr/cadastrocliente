@@ -3,6 +3,7 @@ package com.viratech.cadastrocliente.service;
 import com.viratech.cadastrocliente.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.dto.UserResponseDTO;
 import com.viratech.cadastrocliente.model.builders.UserBuilder;
+import com.viratech.cadastrocliente.model.builders.UserRequestDtoBuilder;
 import com.viratech.cadastrocliente.model.builders.UserResponseDtoBuilder;
 import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.enums.UserStatus;
@@ -11,6 +12,7 @@ import com.viratech.cadastrocliente.model.mapper.AddressMapper;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
 import com.viratech.cadastrocliente.repository.UserRepository;
 import jakarta.mail.MessagingException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,11 +29,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
 
+import static com.viratech.cadastrocliente.model.builders.UserBuilder.aUser;
 import static com.viratech.cadastrocliente.model.builders.UserRequestDtoBuilder.aUserRequestDTO;
+import static com.viratech.cadastrocliente.model.builders.UserResponseDtoBuilder.umUserResponseDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -56,7 +59,7 @@ public class UserServiceTest {
     public void shouldSaveUser() throws MessagingException {
 
         UserRequestDTO request = aUserRequestDTO().now();
-        UserResponseDTO response = UserResponseDtoBuilder.umUserResponseDTO().now();
+        UserResponseDTO response = umUserResponseDTO().now();
 
         User user = new User();
 
@@ -85,7 +88,7 @@ public class UserServiceTest {
     public void shouldSetPendingVerificationStatus() throws MessagingException {
 
         UserRequestDTO request = aUserRequestDTO().now();
-        UserResponseDTO response = UserResponseDtoBuilder.umUserResponseDTO().now();
+        UserResponseDTO response = umUserResponseDTO().now();
 
         User user = new User();
 
@@ -132,7 +135,7 @@ public class UserServiceTest {
                 .rg(rg)
                 .now();
 
-        User user = UserBuilder.aUser().now();
+        User user = aUser().now();
 
         when(repository.findConflicts(requestDTO.email(), requestDTO.cpf(), requestDTO.rg())).thenReturn(List.of(user));
 
@@ -155,6 +158,37 @@ public class UserServiceTest {
 
                 Arguments.of( "usuario@email.com", "44054049095", "424284251", "Validation failed with 3 errors", "rg, cpf e email")
         );
+    }
+
+    @Test
+    @DisplayName("Deve mostrar a lista de usuários")
+    public void shouldListedAllUsers(){
+
+        User user1 = aUser().now();
+        User user2 = aUser().now();
+        User user3 = aUser().now();
+
+        List<User> users = List.of(user1, user2, user3);
+
+        UserResponseDTO userReponse1 = umUserResponseDTO().now();
+        UserResponseDTO userReponse2 = umUserResponseDTO().now();
+        UserResponseDTO userReponse3 = umUserResponseDTO().now();
+
+        List<UserResponseDTO> usersResponse = List.of(userReponse1, userReponse2, userReponse3);
+
+        when(userMapper.toListUserResponseDTO(users)).thenReturn(usersResponse);
+        when(repository.findAll()).thenReturn(users);
+
+        List<UserResponseDTO> result = service.findAllUsers();
+
+        Assertions.assertThat(result)
+                .isNotNull()
+                .hasSize(3)
+                .containsAnyElementsOf(usersResponse);
+
+        verify(repository, times(1)).findAll();
+        verify(repository).findAll();
+        verify(userMapper).toListUserResponseDTO(users);
     }
 
 }
