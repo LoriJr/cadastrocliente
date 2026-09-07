@@ -12,32 +12,39 @@ import com.viratech.cadastrocliente.model.mapper.AddressMapper;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
 import com.viratech.cadastrocliente.repository.UserRepository;
 import jakarta.mail.MessagingException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.MessageSource;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.viratech.cadastrocliente.model.builders.UserBuilder.aUser;
 import static com.viratech.cadastrocliente.model.builders.UserRequestDtoBuilder.aUserRequestDTO;
 import static com.viratech.cadastrocliente.model.builders.UserResponseDtoBuilder.umUserResponseDTO;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
+
+    private Validator validator;
 
     @Mock
     private UserRepository repository;
@@ -53,6 +60,12 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserService service;
+
+    @BeforeEach
+    void setUp() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+    }
 
     @Test
     @DisplayName("Deve salvar o usuário no banco")
@@ -181,7 +194,7 @@ public class UserServiceTest {
 
         List<UserResponseDTO> result = service.findAllUsers();
 
-        Assertions.assertThat(result)
+        assertThat(result)
                 .isNotNull()
                 .hasSize(3)
                 .containsAnyElementsOf(usersResponse);
@@ -189,6 +202,68 @@ public class UserServiceTest {
         verify(repository, times(1)).findAll();
         verify(repository).findAll();
         verify(userMapper).toListUserResponseDTO(users);
+    }
+
+    @Test
+    @DisplayName("Deve consultar usuário usando email")
+    public void shouldFindUserByEmail(){
+
+        String email = "usuario@gmail.com";
+        User user = aUser().email(email).now();
+
+        UserResponseDTO response = umUserResponseDTO().now();
+
+        when(repository.findByEmail(email)).thenReturn(Optional.of(user));
+
+        when(userMapper.toResponseDTO(user)).thenReturn(response);
+
+        UserResponseDTO result = service.findUserByEmail(email);
+
+        assertThat(result).isNotNull().isEqualTo(response);
+
+        verify(repository, times(1)).findByEmail(email);
+
+    }
+
+    @ParameterizedTest(name = "{1}")
+    @CsvSource(textBlock = """
+                    '', 'espaço vazio'
+                    ' ', 'espaço em branco'
+                    NULL, 'nulo'
+                    """, nullValues = "NULL"
+    )
+    public void shouldThrowExceptionWhenEmailIsEmpty(String email, String message){
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                ()-> service.deleteUserByEmail(email));
+
+        assertEquals("Email can not be empty", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção quando usuário não for encontrado por e-mail")
+    public void shoulThrowdExceptionWhenUserNotFoundByEmail(){
+
+        String email = "emailInexistente@gmail.com";
+
+        when(repository.findByEmail(email)).thenReturn(Optional.empty());
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                ()-> service.deleteUserByEmail(email));
+
+        assertThat(ex).isNotNull();
+
+        assertEquals("User not found for this email: " + email, ex.getMessage());
+
+        verify(repository, times(1)).findByEmail(email);
+        verify(userMapper, never()).toResponseDTO(any(User.class));
+    }
+
+    @Test
+    public void shoudToDeleteUserByEmail(){
+
+
+
     }
 
 }
