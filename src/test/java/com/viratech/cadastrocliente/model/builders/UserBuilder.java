@@ -34,15 +34,15 @@ public class UserBuilder {
     private static void setDefaultValues(UserBuilder builder) {
         builder.id = 1L;
         builder.name = "Usuario Valido";
-        builder.email = "usuario@email";
+        builder.email = "usuario@email.com";
         builder.phone = "11911112222";
-        builder.cpf = "32260000800";
+        builder.cpf = "44054049095";
         builder.rg = "424284251";
         builder.birthDate = LocalDate.of(1990, 1, 1);
         builder.address = AddressBuilder.aAddress().now();
         builder.createdAt = LocalDateTime.now();
         builder.verificationToken = null;
-        builder.userCredential = UserCredentialBuilder.aUserCredential().now(); //TODO adicionar builder
+        builder.userCredential = null; //TODO adicionar builder
         builder.userStatus = UserStatus.PENDING_VERIFICATION;
     }
 

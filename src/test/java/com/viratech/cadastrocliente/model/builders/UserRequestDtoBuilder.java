@@ -26,8 +26,8 @@ public class UserRequestDtoBuilder {
         builder.name = "Usuario Valido";
         builder.email = "usuario@email.com";
         builder.phone = "11911112222";
-        builder.cpf = "52998224725";
-        builder.rg = "424214181";
+        builder.cpf = "44054049095";
+        builder.rg = "424284251";
         builder.birthDate = LocalDate.of(1995, 1, 1);
         builder.address = AddressBuilder.aAddress().nowDTO();
     }

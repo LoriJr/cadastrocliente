@@ -2,24 +2,30 @@ package com.viratech.cadastrocliente.service;
 
 import com.viratech.cadastrocliente.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.dto.UserResponseDTO;
+import com.viratech.cadastrocliente.model.builders.UserBuilder;
 import com.viratech.cadastrocliente.model.builders.UserResponseDtoBuilder;
 import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.enums.UserStatus;
+import com.viratech.cadastrocliente.model.exceptions.CustomValidationException;
 import com.viratech.cadastrocliente.model.mapper.AddressMapper;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
 import com.viratech.cadastrocliente.repository.UserRepository;
 import jakarta.mail.MessagingException;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 import static com.viratech.cadastrocliente.model.builders.UserRequestDtoBuilder.aUserRequestDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,6 +41,9 @@ public class UserServiceTest {
 
     @Mock
     private UserMapper userMapper;
+
+    @Mock
+    private MessageSource messageSource;
 
     @Mock
     private AddressMapper addressMapper;
@@ -111,4 +120,41 @@ public class UserServiceTest {
 
         assertEquals("Request body must not be null", ex.getMessage());
     }
+
+    @ParameterizedTest(name = "{4}")
+    @MethodSource("conflictDataProvider")
+    @DisplayName("Deve validar dados existentes durante cadastro de usuário")
+    public void shouldValidateFieldConflits(String email, String cpf, String rg, String field, String message){
+
+        UserRequestDTO requestDTO = aUserRequestDTO()
+                .email(email)
+                .cpf(cpf)
+                .rg(rg)
+                .now();
+
+        User user = UserBuilder.aUser().now();
+
+        when(repository.findConflicts(requestDTO.email(), requestDTO.cpf(), requestDTO.rg())).thenReturn(List.of(user));
+
+        CustomValidationException ex = assertThrows(CustomValidationException.class,
+                () -> service.userSave(requestDTO, Locale.getDefault()));
+
+        assertEquals(field, ex.getMessage());
+    }
+
+    private static Stream<Arguments> conflictDataProvider(){
+        return Stream.of(
+                Arguments.of("usuario@email.com", "44054049096", "424284252", "Validation failed with 1 errors","e-mail já existe"),
+                Arguments.of( "usuario1@email.com", "44054049095", "424284252", "Validation failed with 1 errors", "cpf já existe"),
+                Arguments.of( "usuario1@email.com", "44054049096", "424284251", "Validation failed with 1 errors", "rg já existe"),
+
+                Arguments.of( "usuario@email.com", "44054049095", "424284252", "Validation failed with 2 errors", "email e cpf "),
+                Arguments.of( "usuario@email.com", "44054049096", "424284251", "Validation failed with 2 errors", "email e rg"),
+
+                Arguments.of( "usuario1@email.com", "44054049095", "424284251", "Validation failed with 2 errors", "rg e cpf"),
+
+                Arguments.of( "usuario@email.com", "44054049095", "424284251", "Validation failed with 3 errors", "rg, cpf e email")
+        );
+    }
+
 }

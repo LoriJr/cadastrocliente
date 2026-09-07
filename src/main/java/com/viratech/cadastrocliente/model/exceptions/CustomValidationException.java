@@ -1,6 +1,5 @@
 package com.viratech.cadastrocliente.model.exceptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomValidationException extends RuntimeException {
