@@ -139,7 +139,9 @@ public class UserService {
 
         log.info("[updateUser] {}", dto.address());
 
-        return userMapper.toResponseDTO(userRepository.save(user));
+        User userUpdated = userRepository.save(user);
+
+        return userMapper.toResponseDTO(userUpdated);
     }
 
     public Page<UserResponseDTO> getAllUsersPage(UserFilterRequest filter, Pageable pageable){

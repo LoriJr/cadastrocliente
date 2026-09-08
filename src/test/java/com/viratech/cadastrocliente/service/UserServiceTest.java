@@ -2,9 +2,6 @@ package com.viratech.cadastrocliente.service;
 
 import com.viratech.cadastrocliente.dto.UserRequestDTO;
 import com.viratech.cadastrocliente.dto.UserResponseDTO;
-import com.viratech.cadastrocliente.model.builders.UserBuilder;
-import com.viratech.cadastrocliente.model.builders.UserRequestDtoBuilder;
-import com.viratech.cadastrocliente.model.builders.UserResponseDtoBuilder;
 import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.enums.UserStatus;
 import com.viratech.cadastrocliente.model.exceptions.CustomValidationException;
@@ -12,11 +9,9 @@ import com.viratech.cadastrocliente.model.mapper.AddressMapper;
 import com.viratech.cadastrocliente.model.mapper.UserMapper;
 import com.viratech.cadastrocliente.repository.UserRepository;
 import jakarta.mail.MessagingException;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,10 +30,9 @@ import java.util.stream.Stream;
 
 import static com.viratech.cadastrocliente.model.builders.UserBuilder.aUser;
 import static com.viratech.cadastrocliente.model.builders.UserRequestDtoBuilder.aUserRequestDTO;
-import static com.viratech.cadastrocliente.model.builders.UserResponseDtoBuilder.umUserResponseDTO;
+import static com.viratech.cadastrocliente.model.builders.UserResponseDtoBuilder.aUserResponseDTO;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,7 +66,7 @@ public class UserServiceTest {
     public void shouldSaveUser() throws MessagingException {
 
         UserRequestDTO request = aUserRequestDTO().now();
-        UserResponseDTO response = umUserResponseDTO().now();
+        UserResponseDTO response = aUserResponseDTO().now();
 
         User user = new User();
 
@@ -101,7 +95,7 @@ public class UserServiceTest {
     public void shouldSetPendingVerificationStatus() throws MessagingException {
 
         UserRequestDTO request = aUserRequestDTO().now();
-        UserResponseDTO response = umUserResponseDTO().now();
+        UserResponseDTO response = aUserResponseDTO().now();
 
         User user = new User();
 
@@ -183,9 +177,9 @@ public class UserServiceTest {
 
         List<User> users = List.of(user1, user2, user3);
 
-        UserResponseDTO userReponse1 = umUserResponseDTO().now();
-        UserResponseDTO userReponse2 = umUserResponseDTO().now();
-        UserResponseDTO userReponse3 = umUserResponseDTO().now();
+        UserResponseDTO userReponse1 = aUserResponseDTO().now();
+        UserResponseDTO userReponse2 = aUserResponseDTO().now();
+        UserResponseDTO userReponse3 = aUserResponseDTO().now();
 
         List<UserResponseDTO> usersResponse = List.of(userReponse1, userReponse2, userReponse3);
 
@@ -211,7 +205,7 @@ public class UserServiceTest {
         String email = "usuario@gmail.com";
         User user = aUser().email(email).now();
 
-        UserResponseDTO response = umUserResponseDTO().now();
+        UserResponseDTO response = aUserResponseDTO().now();
 
         when(repository.findByEmail(email)).thenReturn(Optional.of(user));
 
@@ -264,6 +258,53 @@ public class UserServiceTest {
 
 
 
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenIdNotFound(){
+
+        Long invalidId = 200L;
+
+        User user = aUser().id(invalidId).now();
+        UserRequestDTO requestDTO = aUserRequestDTO().now();
+
+        when(repository.findById(user.getId())).thenReturn(Optional.empty());
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                ()-> service.updateUser(requestDTO, user.getId()));
+
+        assertThat(ex).isNotNull();
+        assertEquals("User not found", ex.getMessage());
+
+        verify(repository, times(1)).findById(invalidId);
+        verify(userMapper, never()).toResponseDTO(user);
+    }
+
+    @Test
+    @DisplayName("Deve atualizar dados do usuário")
+    public void shouldUpdateUser(){
+
+        String newEmail = "novoEmail@gmail.com";
+
+        UserRequestDTO requestDTO = aUserRequestDTO().email(newEmail).now();
+        User user = aUser().now();
+
+        User userUpdated = aUser().email(newEmail).now();
+        UserResponseDTO responseDTO = aUserResponseDTO().email(newEmail).now();
+
+        when(repository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(repository.save(user)).thenReturn(userUpdated);
+        when(userMapper.toResponseDTO(userUpdated)).thenReturn(responseDTO);
+
+        UserResponseDTO result = service.updateUser(requestDTO, user.getId());
+
+        assertNotNull(result);
+        assertEquals(newEmail, result.email());
+
+        verify(repository).findById(user.getId());
+        verify(userMapper).updateUser(requestDTO, user);
+        verify(repository).save(user);
+        verify(userMapper).toResponseDTO(userUpdated);
     }
 
 }

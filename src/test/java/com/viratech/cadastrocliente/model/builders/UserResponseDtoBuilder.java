@@ -17,7 +17,7 @@ public class UserResponseDtoBuilder {
 
     private UserResponseDtoBuilder(){}
 
-    public static UserResponseDtoBuilder umUserResponseDTO() {
+    public static UserResponseDtoBuilder aUserResponseDTO() {
         UserResponseDtoBuilder builder = new UserResponseDtoBuilder();
         setDefaultValues(builder);
         return builder;
