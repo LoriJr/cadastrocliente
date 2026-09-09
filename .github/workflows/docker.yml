@@ -42,11 +42,11 @@ jobs:
 
       - name: Build da imagem
         run: |
-          docker build -t southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-api-repo/app:${{ github.sha }} .
+          docker build -t southamerica-east1-docker.pkg.dev/viratech-1010-508115/cadastrocliente-api-repo/app:${{ github.sha }} .
 
       - name: Push da imagem
         run: |
-          docker push southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-api-repo/app:${{ github.sha }}
+          docker push southamerica-east1-docker.pkg.dev/viratech-1010-508115/cadastrocliente-api-repo/app:${{ github.sha }}
 
       - name: Get GKE credentials
         uses: google-github-actions/get-gke-credentials@v2
@@ -63,7 +63,7 @@ jobs:
       - name: Atualizar imagem
         run: |
           kubectl set image deployment/cadastrocliente \
-          cadastrocliente=southamerica-east1-docker.pkg.dev/viratech-1010/cadastrocliente-api-repo/app:${{ github.sha }}
+          cadastrocliente=southamerica-east1-docker.pkg.dev/viratech-1010-508115/cadastrocliente-api-repo/app:${{ github.sha }}
 
       - name: Aguardar rollout
         run: kubectl rollout status deployment/cadastrocliente
