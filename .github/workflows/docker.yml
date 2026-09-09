@@ -54,9 +54,9 @@ jobs:
           cluster_name: viratech-cluster-cadastrocliente
           location: southamerica-east1
 
-      - name: Criar Secret do Postgres no Cluster
+      - name: Criar Secret do Postgres e Email
         run: |
-          kubectl create secret generic postgres-secret \
+          kubectl create secret generic app-secrets \
             --from-literal=username="${{ secrets.POSTGRES_USER }}" \
             --from-literal=password="${{ secrets.POSTGRES_PASSWORD }}" \
             --from-literal=mail-username="${{ secrets.MAIL_USERNAME }}" \
