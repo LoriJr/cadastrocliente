@@ -39,6 +39,9 @@ spec:
             - name: SPRING_MAIL_PORT
               value: "587"
 
+            - name: APP_URL
+              value: "http://35.198.26.135"
+
             - name: SPRING_MAIL_USERNAME
               valueFrom:
                 secretKeyRef:
