@@ -25,13 +25,13 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: username
+                  key: db-username
 
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: password
+                  key: db-password
 
             - name: SPRING_MAIL_USERNAME
               valueFrom:
