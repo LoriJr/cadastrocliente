@@ -20,12 +20,24 @@ spec:
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://postgres:5432/clientedb
+
             - name: SPRING_DATASOURCE_USERNAME
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: username
+
             - name: SPRING_DATASOURCE_PASSWORD
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+
             - name: SERVER_PORT
               value: "8081"
+
+            - name: APP_CORS_ALLOWED_ORIGIN
+              value: "http://localhost:3000"
           resources:
             requests:
               cpu: 150m
