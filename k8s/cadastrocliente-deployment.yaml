@@ -24,14 +24,20 @@ spec:
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: app-secrets
                   key: db-username
 
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: app-secrets
                   key: db-password
+
+            - name: SPRING_MAIL_HOST
+              value: "smtp.gmail.com"
+
+            - name: SPRING_MAIL_PORT
+              value: "587"
 
             - name: SPRING_MAIL_USERNAME
               valueFrom:
