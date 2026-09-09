@@ -54,6 +54,13 @@ jobs:
           cluster_name: viratech-cluster-cadastrocliente
           location: southamerica-east1
 
+      - name: Criar Secret do Postgres no Cluster
+        run: |
+          kubectl create secret generic postgres-secret \
+            --from-literal=username="${{ secrets.POSTGRES_USER }}" \
+            --from-literal=password="${{ secrets.POSTGRES_PASSWORD }}" \
+            --dry-run=client -o yaml | kubectl apply -f -
+
       - name: Aplicar manifestos
         run: kubectl apply -f k8s/
 
