@@ -59,6 +59,8 @@ jobs:
           kubectl create secret generic postgres-secret \
             --from-literal=username="${{ secrets.POSTGRES_USER }}" \
             --from-literal=password="${{ secrets.POSTGRES_PASSWORD }}" \
+            --from-literal=mail-username="${{ secrets.MAIL_USERNAME }}" \
+            --from-literal=mail-password="${{ secrets.MAIL_PASSWORD }}" \
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Aplicar manifestos
