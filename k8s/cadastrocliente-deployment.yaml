@@ -17,6 +17,14 @@ spec:
           image: southamerica-east1-docker.pkg.dev/viratech-1010-508115/cadastrocliente-api-repo/cadastrocliente-app:v1
           ports:
             - containerPort: 8081
+
+          readinessProbe:
+            httpGet:
+              path: /users # Rota da API que responde com status 200 OK
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://postgres:5432/clientedb
