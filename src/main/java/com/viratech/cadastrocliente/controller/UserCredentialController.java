@@ -38,10 +38,10 @@ public class UserCredentialController {
 
     private final Logger log = LoggerFactory.getLogger(UserCredentialController.class);
 
+    private final String className = UserCredentialController.class.getSimpleName();
+
     @PostMapping("/register")
     public ResponseEntity<UserCredentialResponseDTO> saveCredential(@RequestBody @Valid UserCredentialRequestDTO request) throws MessagingException {
-
-        String className = UserCredentialController.class.getSimpleName();
 
         UserCredentialResponseDTO response = credentialService.saveUserCredential(request);
 
@@ -61,9 +61,9 @@ public class UserCredentialController {
     @GetMapping("/verify")
     public ResponseEntity<String> verifyEmail(@RequestParam String token){
 
-       User user =  verificationService.verifyEmail(token);
+        User user =  verificationService.verifyEmail(token);
 
-       log.info("[{}] [verifyEmail] Conta ativada para o usuário {} ", getClass(), user.getEmail());
+        log.info("[{}] [verifyEmail] Conta ativada para o usuário {} ", className, user.getEmail());
         return ResponseEntity.ok("Conta ativada com sucesso");
     }
 }
