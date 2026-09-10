@@ -4,11 +4,14 @@ import com.viratech.cadastrocliente.dto.UserCredentialRequestDTO;
 import com.viratech.cadastrocliente.dto.UserCredentialResponseDTO;
 import com.viratech.cadastrocliente.dto.UserRoleRequest;
 import com.viratech.cadastrocliente.dto.UserRoleResponse;
+import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.service.UserCredentialService;
 import com.viratech.cadastrocliente.service.UserVerificationService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,8 +36,12 @@ public class UserCredentialController {
     private final UserCredentialService credentialService;
     private final UserVerificationService verificationService;
 
+    private final Logger log = LoggerFactory.getLogger(UserCredentialController.class);
+
     @PostMapping("/register")
     public ResponseEntity<UserCredentialResponseDTO> saveCredential(@RequestBody @Valid UserCredentialRequestDTO request) throws MessagingException {
+
+        String className = UserCredentialController.class.getSimpleName();
 
         UserCredentialResponseDTO response = credentialService.saveUserCredential(request);
 
@@ -54,8 +61,9 @@ public class UserCredentialController {
     @GetMapping("/verify")
     public ResponseEntity<String> verifyEmail(@RequestParam String token){
 
-        verificationService.verifyEmail(token);
+       User user =  verificationService.verifyEmail(token);
 
+       log.info("[{}] [verifyEmail] Conta ativada para o usuário {} ", getClass(), user.getEmail());
         return ResponseEntity.ok("Conta ativada com sucesso");
     }
 }
