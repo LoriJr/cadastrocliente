@@ -20,7 +20,7 @@ spec:
 
           readinessProbe:
             httpGet:
-              path: /users # Rota da API que responde com status 200 OK
+              path: /api/v1/auth/verify # Rota da API que responde com status 200 OK
               port: 8081
             initialDelaySeconds: 10
             periodSeconds: 10
