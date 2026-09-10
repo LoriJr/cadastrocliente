@@ -40,7 +40,10 @@ spec:
               value: "587"
 
             - name: APP_URL
-              value: "http://34.39.187.204"
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: app-url
 
             - name: SPRING_MAIL_USERNAME
               valueFrom:
@@ -58,7 +61,11 @@ spec:
               value: "8081"
 
             - name: APP_CORS_ALLOWED_ORIGIN
-              value: "http://35.198.26.135"
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: cors-allowed-origin
+
           resources:
             requests:
               cpu: 250m

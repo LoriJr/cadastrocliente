@@ -63,6 +63,13 @@ jobs:
             --from-literal=mail-password="${{ secrets.MAIL_PASSWORD }}" \
             --dry-run=client -o yaml | kubectl apply -f -
 
+      - name: Criar ConfigMap de Configuracoes
+        run: |
+          kubectl create configmap app-config \
+            --from-literal=app-url="${{ vars.APP_URL }}" \
+            --from-literal=cors-allowed-origin="${{ vars.CORS_ALLOWED_ORIGIN }}" \
+            --dry-run=client -o yaml | kubectl apply -f -
+
       - name: Aplicar manifestos
         run: kubectl apply -f k8s/
 
