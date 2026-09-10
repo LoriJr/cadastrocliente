@@ -14,7 +14,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: cadastrocliente-frontend
+                name: frontend-service
                 port:
                   number: 80
     - host: cadastrocliente-api.duckdns.org
