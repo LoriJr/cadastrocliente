@@ -40,7 +40,7 @@ spec:
               value: "587"
 
             - name: APP_URL
-              value: "http://35.198.26.135"
+              value: "http://34.39.187.204"
 
             - name: SPRING_MAIL_USERNAME
               valueFrom:
