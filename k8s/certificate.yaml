@@ -1,7 +1,7 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: app-ssl-certificate
+  name: app-ssl-certificate-v2
 spec:
   domains:
     - cadastrocliente.duckdns.org

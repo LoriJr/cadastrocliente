@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: app-ingress
   annotations:
-    networking.gke.io/managed-certificates: "app-ssl-certificate"
+    networking.gke.io/managed-certificates: "app-ssl-certificate-v2"
     kubernetes.io/ingress.class: "gce"
 spec:
   rules:
