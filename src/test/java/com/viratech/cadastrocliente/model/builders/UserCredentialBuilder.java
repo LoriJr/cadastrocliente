@@ -20,7 +20,7 @@ public class UserCredentialBuilder {
         Role role = new Role();
         role.setRoleName(RoleName.USER);
 
-        builder.id = builder.user.getId();
+        builder.id = 1L;
         builder.roles = Set.of(role);
 
         builder.user = UserBuilder.aUser().now();

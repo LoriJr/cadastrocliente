@@ -39,7 +39,7 @@ public class UserCredentialService implements UserDetailsService {
 
         // 1. Validar se o usuário existe pelo e-mail
         var user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("User not found for email: " + request.email()));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for email: " + request.email()));
 
         // 2. Verificar se este usuário já possui uma credencial (evitar duplicidade)
         if(userCredentialRepository.existsByUserEmail(request.email())){
