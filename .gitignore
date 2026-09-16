@@ -33,4 +33,4 @@ build/
 .vscode/
 
 # Ignorar configurações sensíveis do Spring
-src/main/resources/application.properties
+#src/main/resources/application.properties

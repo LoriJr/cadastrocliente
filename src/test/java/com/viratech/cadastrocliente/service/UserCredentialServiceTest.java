@@ -123,12 +123,12 @@ public class UserCredentialServiceTest {
     }
 
 
-    @Test
-    @DisplayName("Deve rejeitar lançar exceção para credencial existente")
-    public void shouldThrowException409IfCredentialExists(){
-
-
-    }
+//    @Test
+//    @DisplayName("Deve rejeitar lançar exceção para credencial existente")
+//    public void shouldThrowException409IfCredentialExists(){
+//
+//
+//    }
 
 
 
