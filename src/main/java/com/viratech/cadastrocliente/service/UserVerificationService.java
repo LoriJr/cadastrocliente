@@ -17,7 +17,7 @@ public class UserVerificationService {
     private final UserVerificationTokenRepository tokenRepository;
 
     @Transactional
-    public void verifyEmail(String token){
+    public User verifyEmail(String token){
 
         UserVerificationToken verificationToken = tokenRepository.findByToken(token)
                 .orElseThrow(() ->
@@ -36,6 +36,8 @@ public class UserVerificationService {
         user.setUserStatus(UserStatus.ACTIVE);
 
         verificationToken.setUsed(true);
+
+        return user;
 
     }
 }

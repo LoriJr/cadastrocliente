@@ -87,7 +87,7 @@ public class UserService {
         verificationToken.setUser(user);
         user.setVerificationToken(verificationToken);
 
-        log.info("[{}] [UserSave] Recebido dados do usuário {}", className, user);
+        log.info("[{}] [UserSave] Recebido dados do usuário {}", className, user.getEmail());
 
         userRepository.save(user);
 

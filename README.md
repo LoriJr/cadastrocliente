@@ -304,7 +304,7 @@ spring.mail.username=seu-email@gmail.com
 spring.mail.password=sua-senha-de-app
 
 # CORS
-app.cors.allowed-origin=http://localhost:3000
+app.cors.allowed-origin=http://localhost:3000 (esse de frontend na porta 3000)
 
 # JWT (defina um secret seguro)
 api.security.token.secret=SEU_SECRET_JWT
@@ -393,7 +393,7 @@ Push na branch main
     → Push para Docker Hub
 ```
 
-> O pipeline também possui configuração comentada para deploy no **Google Cloud (GKE + Artifact Registry)**, pronta para ser habilitada.
+> O pipeline também possui configuração para deploy no **Google Cloud (GKE + Artifact Registry)**.
 
 ### Secrets necessários no GitHub
 
@@ -401,6 +401,12 @@ Push na branch main
 |---|---|
 | `DOCKER_USERNAME` | Usuário do Docker Hub |
 | `DOCKER_PASSWORD` | Senha/token do Docker Hub |
+| `GCP_SA_KEY` | Chave JSON da Service Account da Google Cloud para autenticação no GKE e Artifact Registry |
+| `MAIL_PASSWORD` | Senha de Aplicativo de 16 dígitos gerada no Google para conexão SMTP do Spring Boot |
+| `MAIL_USERNAME` | Endereço de e-mail do Gmail utilizado para envio de e-mails |
+| `POSTGRES_PASSWORD` | Senha de acesso ao banco de dados PostgreSQL |
+| `POSTGRES_USERNAME` | Nome de usuário para conexão com o banco de dados PostgreSQL |
+
 
 ---
 

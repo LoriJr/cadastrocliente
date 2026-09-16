@@ -44,6 +44,7 @@ public class ConfigSecurity {
                             req.requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh-token").permitAll();
                             req.requestMatchers(HttpMethod.POST, "/users", "/api/v1/auth/register").permitAll();
                             req.requestMatchers(HttpMethod.GET, "/api/v1/auth/verify").permitAll();
+                            req.requestMatchers("/actuator/health").permitAll();
 
                             req.requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN");
                             req.requestMatchers(HttpMethod.GET, "/users/page/**").hasRole("ADMIN");
