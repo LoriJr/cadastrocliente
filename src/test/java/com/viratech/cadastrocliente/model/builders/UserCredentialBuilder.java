@@ -5,6 +5,7 @@ import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
 import com.viratech.cadastrocliente.model.enums.RoleName;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserCredentialBuilder {
@@ -21,7 +22,7 @@ public class UserCredentialBuilder {
         role.setRoleName(RoleName.USER);
 
         builder.id = 1L;
-        builder.roles = Set.of(role);
+        builder.roles = new HashSet<>(Set.of(role));
 
         builder.user = UserBuilder.aUser().now();
 
@@ -39,7 +40,7 @@ public class UserCredentialBuilder {
     }
 
     public UserCredentialBuilder roles(Set<Role> param){
-        roles = param;
+        roles = new HashSet<>(param);
         return this;
     }
 

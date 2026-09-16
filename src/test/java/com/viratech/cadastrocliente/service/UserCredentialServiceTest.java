@@ -2,6 +2,8 @@ package com.viratech.cadastrocliente.service;
 
 import com.viratech.cadastrocliente.dto.UserCredentialRequestDTO;
 import com.viratech.cadastrocliente.dto.UserCredentialResponseDTO;
+import com.viratech.cadastrocliente.dto.UserRoleRequest;
+import com.viratech.cadastrocliente.dto.UserRoleResponse;
 import com.viratech.cadastrocliente.model.entity.Role;
 import com.viratech.cadastrocliente.model.entity.User;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
@@ -20,11 +22,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.viratech.cadastrocliente.model.builders.UserBuilder.aUser;
 import static com.viratech.cadastrocliente.model.builders.UserCredentialBuilder.aUserCredential;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -84,4 +86,52 @@ public class UserCredentialServiceTest {
         assertNotNull(result);
         assertEquals(responseDTO, result);
     }
+
+    @Test
+    @DisplayName("Deve salvar nova credencial")
+    public void shouldSaveNewCredential(){
+
+        UserCredential userCredential = aUserCredential().id(1L).now();
+
+        userCredential.getRoles().forEach(roles -> System.out.println("Role: " + roles.getRoleName()));
+
+        UserRoleRequest request = new UserRoleRequest(RoleName.ADMIN);
+
+        Role adminRole = new Role();
+        adminRole.setRoleName(RoleName.ADMIN);
+
+        UserRoleResponse responseDTO =
+                new UserRoleResponse(
+                        1L,
+                        "Usuario Valido",
+                        "email@gmail.com",
+                        Set.of(RoleName.USER, RoleName.ADMIN)
+                        );
+
+        when(credentialRepository.findById(1L)).thenReturn(Optional.of(userCredential));
+        when(roleRepository.findByRoleName(RoleName.ADMIN)).thenReturn(Optional.of(adminRole));
+        when(credentialMapper.toRoleResponse(userCredential)).thenReturn(responseDTO);
+
+        UserRoleResponse result = credentialService.addRole(1L, request);
+
+        assertNotNull(result);
+
+        assertEquals(2, result.roles().size());
+        assertTrue(result.roles().contains(RoleName.ADMIN));
+        assertTrue(result.roles().contains(RoleName.USER));
+
+    }
+
+
+    @Test
+    @DisplayName("Deve rejeitar lançar exceção para credencial existente")
+    public void shouldThrowException409IfCredentialExists(){
+
+
+    }
+
+
+
+
+
 }

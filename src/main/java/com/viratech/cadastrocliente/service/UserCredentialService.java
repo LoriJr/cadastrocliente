@@ -15,6 +15,7 @@ import com.viratech.cadastrocliente.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,9 +42,9 @@ public class UserCredentialService implements UserDetailsService {
         var user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for email: " + request.email()));
 
-        // 2. Verificar se este usuário já possui uma credencial (evitar duplicidade)
+        // 2. Verificar se este usuário já possui uma email (evitar duplicidade)
         if(userCredentialRepository.existsByUserEmail(request.email())){
-            throw new RuntimeException( "Credentials already registered for this user.");
+            throw new DataIntegrityViolationException( "Email already registered for this user.");
         }
 
         // 3. Converter DTO para Entity
@@ -98,4 +99,7 @@ public class UserCredentialService implements UserDetailsService {
         return userCredentialRepository.findByUserEmail(username)
                 .orElseThrow(()-> new UsernameNotFoundException("User Not found"));
     }
+
+
+
 }
