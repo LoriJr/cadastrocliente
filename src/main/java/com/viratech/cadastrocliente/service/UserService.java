@@ -36,9 +36,11 @@ public class UserService {
     private final AddressMapper addressMapper;
     private final MessageSource messageSource;
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final String className = UserService.class.getSimpleName();
 
     @Transactional
     public UserResponseDTO userSave(UserRequestDTO request, Locale locale) throws MessagingException {
+        log.info("[{}] [userSave] request data of {}", className, request.email());
 
         String className = UserService.class.getSimpleName();
 
@@ -53,6 +55,8 @@ public class UserService {
         );
 
         List<ApiResponseError.ObjectError> errors = new ArrayList<>();
+
+        log.info("[{}] [userSave] Search conflicts" , className);
 
         for (User user : conflicts) {
 
@@ -87,9 +91,9 @@ public class UserService {
         verificationToken.setUser(user);
         user.setVerificationToken(verificationToken);
 
-        log.info("[{}] [UserSave] Recebido dados do usuário {}", className, user.getEmail());
-
         userRepository.save(user);
+
+        log.info("[{}] [UserSave] Dados do usuário foram salvos com sucesso", className);
 
         return userMapper.toResponseDTO(user);
     }

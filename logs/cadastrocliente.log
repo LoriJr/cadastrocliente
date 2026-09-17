@@ -1,0 +1,130 @@
+2026-09-17 00:00:51.654 INFO  [http-nio-8081-exec-5] c.v.c.security.FilterAccessToken - token: null
+2026-09-17 00:00:51.667 INFO  [http-nio-8081-exec-5] c.v.c.controller.UserController - [UserController] Start flow [saveUser]
+2026-09-17 00:00:51.668 INFO  [http-nio-8081-exec-5] c.v.c.service.UserService - [UserService] [userSave] request data of jrsilva.lorivas@gmail.com
+2026-09-17 00:03:33.472 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2026-09-17 00:03:33.528 INFO  [main] c.v.c.CadastroclienteApplication - Starting CadastroclienteApplication using Java 21.0.5 with PID 33276 (C:\Users\LouJunior\Documents\dev\Meus projetos\JAVA\2026\cadastrocliente\target\classes started by LouJunior in C:\Users\LouJunior\Documents\dev\Meus projetos\JAVA\2026\cadastrocliente)
+2026-09-17 00:03:33.529 INFO  [main] c.v.c.CadastroclienteApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-17 00:03:34.819 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-17 00:03:34.880 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 55 ms. Found 4 JPA repository interfaces.
+2026-09-17 00:03:35.538 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-09-17 00:03:35.548 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-09-17 00:03:35.552 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-17 00:03:35.552 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2026-09-17 00:03:35.614 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-17 00:03:35.615 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2041 ms
+2026-09-17 00:03:35.956 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-17 00:03:36.117 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@75805562
+2026-09-17 00:03:36.118 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-17 00:03:36.144 INFO  [main] org.flywaydb.core.FlywayExecutor - Database: jdbc:postgresql://localhost:5432/clientedb (PostgreSQL 18.1)
+2026-09-17 00:03:36.153 WARN  [main] o.f.c.i.database.base.Database - Flyway upgrade recommended: PostgreSQL 18.1 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 16.
+2026-09-17 00:03:36.198 INFO  [main] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.035s)
+2026-09-17 00:03:36.263 INFO  [main] o.f.core.internal.command.DbMigrate - Current version of schema "public": 8
+2026-09-17 00:03:36.265 INFO  [main] o.f.core.internal.command.DbMigrate - Schema "public" is up to date. No migration necessary.
+2026-09-17 00:03:36.356 INFO  [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-17 00:03:36.410 INFO  [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-09-17 00:03:36.454 INFO  [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-17 00:03:36.731 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-17 00:03:36.780 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-17 00:03:37.755 INFO  [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-17 00:03:37.887 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-17 00:03:38.261 INFO  [main] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-17 00:03:38.709 INFO  [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userCredentialService
+2026-09-17 00:03:38.863 WARN  [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-17 00:03:39.214 INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2026-09-17 00:03:39.705 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-09-17 00:03:39.726 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2026-09-17 00:03:39.739 INFO  [main] c.v.c.CadastroclienteApplication - Started CadastroclienteApplication in 6.803 seconds (process running for 7.516)
+2026-09-17 00:04:38.455 INFO  [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-17 00:04:38.455 INFO  [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-09-17 00:04:38.456 INFO  [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-09-17 00:04:38.499 INFO  [http-nio-8081-exec-2] c.v.c.security.FilterAccessToken - token: null
+2026-09-17 00:04:38.612 INFO  [http-nio-8081-exec-2] c.v.c.controller.UserController - [UserController] Start flow [saveUser]
+2026-09-17 00:04:38.617 INFO  [http-nio-8081-exec-2] c.v.c.service.UserService - [UserService] [userSave] request data of jrsilva.lorivas@gmail.com
+2026-09-17 00:04:38.719 INFO  [http-nio-8081-exec-2] c.v.c.service.UserService - [UserService] [userSave] Search conflicts
+2026-09-17 00:12:07.798 INFO  [http-nio-8081-exec-6] c.v.c.security.FilterAccessToken - token: null
+2026-09-17 00:12:07.802 INFO  [http-nio-8081-exec-6] c.v.c.controller.UserController - [UserController] Start flow [saveUser]
+2026-09-17 00:12:07.803 INFO  [http-nio-8081-exec-6] c.v.c.service.UserService - [UserService] [userSave] request data of lou.junior@viratec.com
+2026-09-17 00:12:07.808 INFO  [http-nio-8081-exec-6] c.v.c.service.UserService - [UserService] [userSave] Search conflicts
+2026-09-17 00:12:07.809 INFO  [http-nio-8081-exec-6] c.v.c.service.UserService - [UserService] [UserSave] Recebido dados do usuário lou.junior@viratec.com
+2026-09-17 00:13:26.470 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2026-09-17 00:13:26.520 INFO  [main] c.v.c.CadastroclienteApplication - Starting CadastroclienteApplication using Java 21.0.5 with PID 35836 (C:\Users\LouJunior\Documents\dev\Meus projetos\JAVA\2026\cadastrocliente\target\classes started by LouJunior in C:\Users\LouJunior\Documents\dev\Meus projetos\JAVA\2026\cadastrocliente)
+2026-09-17 00:13:26.521 INFO  [main] c.v.c.CadastroclienteApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-17 00:13:27.559 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-17 00:13:27.617 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 52 ms. Found 4 JPA repository interfaces.
+2026-09-17 00:13:28.282 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-09-17 00:13:28.293 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-09-17 00:13:28.297 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-17 00:13:28.297 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2026-09-17 00:13:28.373 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-17 00:13:28.374 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1816 ms
+2026-09-17 00:13:28.710 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-17 00:13:29.039 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7b3c0ecb
+2026-09-17 00:13:29.040 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-17 00:13:29.067 INFO  [main] org.flywaydb.core.FlywayExecutor - Database: jdbc:postgresql://localhost:5432/clientedb (PostgreSQL 18.1)
+2026-09-17 00:13:29.075 WARN  [main] o.f.c.i.database.base.Database - Flyway upgrade recommended: PostgreSQL 18.1 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 16.
+2026-09-17 00:13:29.116 INFO  [main] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.031s)
+2026-09-17 00:13:29.186 INFO  [main] o.f.core.internal.command.DbMigrate - Current version of schema "public": 8
+2026-09-17 00:13:29.190 INFO  [main] o.f.core.internal.command.DbMigrate - Schema "public" is up to date. No migration necessary.
+2026-09-17 00:13:29.281 INFO  [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-17 00:13:29.348 INFO  [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-09-17 00:13:29.383 INFO  [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-17 00:13:29.694 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-17 00:13:29.805 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-17 00:13:30.898 INFO  [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-17 00:13:31.036 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-17 00:13:31.413 INFO  [main] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-17 00:13:31.885 INFO  [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userCredentialService
+2026-09-17 00:13:32.037 WARN  [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-17 00:13:32.383 INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2026-09-17 00:13:32.928 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-09-17 00:13:32.948 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2026-09-17 00:13:32.959 INFO  [main] c.v.c.CadastroclienteApplication - Started CadastroclienteApplication in 6.916 seconds (process running for 7.273)
+2026-09-17 00:13:39.788 INFO  [http-nio-8081-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-17 00:13:39.788 INFO  [http-nio-8081-exec-4] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-09-17 00:13:39.790 INFO  [http-nio-8081-exec-4] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-09-17 00:13:39.828 INFO  [http-nio-8081-exec-4] c.v.c.security.FilterAccessToken - token: null
+2026-09-17 00:13:39.967 INFO  [http-nio-8081-exec-4] c.v.c.controller.UserController - [UserController] Start flow [saveUser]
+2026-09-17 00:13:39.973 INFO  [http-nio-8081-exec-4] c.v.c.service.UserService - [UserService] [userSave] request data of lou.junior@viratec.com
+2026-09-17 00:13:40.056 INFO  [http-nio-8081-exec-4] c.v.c.service.UserService - [UserService] [userSave] Search conflicts
+2026-09-17 00:13:40.056 INFO  [http-nio-8081-exec-4] c.v.c.service.UserService - [UserService] [UserSave] Recebido dados do usuário lou.junior@viratec.com
+2026-09-17 00:19:58.837 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2026-09-17 00:19:58.951 INFO  [main] c.v.c.CadastroclienteApplication - Starting CadastroclienteApplication using Java 21.0.5 with PID 15520 (C:\Users\LouJunior\Documents\dev\Meus projetos\JAVA\2026\cadastrocliente\target\classes started by LouJunior in C:\Users\LouJunior\Documents\dev\Meus projetos\JAVA\2026\cadastrocliente)
+2026-09-17 00:19:58.952 INFO  [main] c.v.c.CadastroclienteApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-17 00:20:00.037 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-17 00:20:00.103 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 59 ms. Found 4 JPA repository interfaces.
+2026-09-17 00:20:00.878 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-09-17 00:20:00.890 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-09-17 00:20:00.896 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-17 00:20:00.896 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2026-09-17 00:20:00.982 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-17 00:20:00.984 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1981 ms
+2026-09-17 00:20:01.322 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-17 00:20:01.523 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5341641d
+2026-09-17 00:20:01.525 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-17 00:20:01.558 INFO  [main] org.flywaydb.core.FlywayExecutor - Database: jdbc:postgresql://localhost:5432/clientedb (PostgreSQL 18.1)
+2026-09-17 00:20:01.567 WARN  [main] o.f.c.i.database.base.Database - Flyway upgrade recommended: PostgreSQL 18.1 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 16.
+2026-09-17 00:20:01.612 INFO  [main] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.034s)
+2026-09-17 00:20:01.684 INFO  [main] o.f.core.internal.command.DbMigrate - Current version of schema "public": 8
+2026-09-17 00:20:01.689 INFO  [main] o.f.core.internal.command.DbMigrate - Schema "public" is up to date. No migration necessary.
+2026-09-17 00:20:01.803 INFO  [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-17 00:20:01.890 INFO  [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-09-17 00:20:01.935 INFO  [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-17 00:20:02.315 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-17 00:20:02.384 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-17 00:20:03.726 INFO  [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-17 00:20:03.872 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-17 00:20:04.301 INFO  [main] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-17 00:20:04.770 INFO  [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userCredentialService
+2026-09-17 00:20:04.978 WARN  [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-17 00:20:05.362 INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2026-09-17 00:20:05.928 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-09-17 00:20:05.946 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2026-09-17 00:20:05.957 INFO  [main] c.v.c.CadastroclienteApplication - Started CadastroclienteApplication in 7.559 seconds (process running for 7.885)
+2026-09-17 00:20:11.289 INFO  [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-17 00:20:11.289 INFO  [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-09-17 00:20:11.290 INFO  [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-09-17 00:20:11.320 INFO  [http-nio-8081-exec-1] c.v.c.security.FilterAccessToken - token: null
+2026-09-17 00:20:11.441 INFO  [http-nio-8081-exec-1] c.v.c.controller.UserController - [UserController] Start flow [saveUser]
+2026-09-17 00:20:11.447 INFO  [http-nio-8081-exec-1] c.v.c.service.UserService - [UserService] [userSave] request data of lou.junior@viratec.com
+2026-09-17 00:20:11.529 INFO  [http-nio-8081-exec-1] c.v.c.service.UserService - [UserService] [userSave] Search conflicts
+2026-09-17 00:20:11.529 INFO  [http-nio-8081-exec-1] c.v.c.service.UserService - [UserService] [UserSave] Recebido dados do usuário lou.junior@viratec.com
