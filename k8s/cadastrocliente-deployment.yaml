@@ -18,6 +18,14 @@ spec:
           ports:
             - containerPort: 8081
 
+          volumeMounts:
+            - name: logs
+              mountPath: /app/logs
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: cadastrocliente-logs-pvc
+
           readinessProbe:
             httpGet:
               path: /actuator/health # Rota da API que responde com status 200 OK
