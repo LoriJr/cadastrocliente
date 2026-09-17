@@ -18,6 +18,10 @@ spec:
           ports:
             - containerPort: 8081
 
+          volumeMounts:
+            - name: logs
+              mountPath: /app/logs
+
           readinessProbe:
             httpGet:
               path: /actuator/health # Rota da API que responde com status 200 OK
@@ -83,6 +87,12 @@ spec:
             limits:
               cpu: 500m
               memory: 1024Mi
+
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: cadastrocliente-logs-pvc
+
       initContainers:
         - name: wait-for-postgres
           image: busybox:1.36
