@@ -1,20 +1,17 @@
 package com.viratech.cadastrocliente.authentication;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
-import lombok.RequiredArgsConstructor;
+import com.viratech.cadastrocliente.model.exceptions.InvalidLoginException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 @Service
 public class TokenService {
@@ -34,6 +31,7 @@ public class TokenService {
                     .withIssuer("auth0")
                     .withSubject(user.getUsername())
                     .withClaim("name", user.getUser().getName())
+                    .withClaim("type", "access")
                     .withExpiresAt(expires(30))
                     .sign(algorithm);
         } catch (JWTCreationException exception){
@@ -46,6 +44,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("auth0")
                     .withSubject(user.getId().toString())
+                    .withClaim("type", "refresh")
                     .withExpiresAt(expires(60))
                     .sign(algorithm);
         } catch (JWTCreationException exception){
@@ -57,19 +56,31 @@ public class TokenService {
         return Instant.now().plus(Duration.ofMinutes(timeExpiresAt));
     }
 
-    public String verifyToken(String token){
+    public String verifyAccessToken(String token) {
+        return verifyToken(token, "access");
+    }
 
-        DecodedJWT decodedJWT;
+    public String verifyRefreshToken(String token) {
+        return verifyToken(token, "refresh");
+    }
+
+    private String verifyToken(String token, String expectedType) {
         try {
-            JWTVerifier verifier = JWT.require(algorithm)
+            DecodedJWT decodedJWT = JWT.require(algorithm)
                     .withIssuer("auth0")
-                    .build();
+                    .build()
+                    .verify(token);
 
-            decodedJWT = verifier.verify(token);
+            String tokenType = decodedJWT.getClaim("type").asString();
+
+            if (!expectedType.equals(tokenType)) {
+                throw new InvalidLoginException("Invalid token type.");
+            }
+
             return decodedJWT.getSubject();
 
-        } catch (JWTVerificationException exception){
-            throw new RoleBusinessException("Error to validate token!");
+        } catch (JWTVerificationException exception) {
+            throw new InvalidLoginException("Invalid or expired token.");
         }
     }
 }
