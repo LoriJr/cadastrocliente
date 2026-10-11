@@ -33,7 +33,8 @@ public class FilterAccessToken extends OncePerRequestFilter {
         String token = recoveryToken(request);
 
         if(token != null){
-            String email = tokenService.verifyToken(token);
+            try{
+            String email = tokenService.verifyAccessToken(token);
             UserCredential userCredential = userCredentialRepository.findByUserEmail(email)
                     .orElseThrow(
                             ()-> new InvalidLoginException("access unauthorized")
@@ -41,6 +42,15 @@ public class FilterAccessToken extends OncePerRequestFilter {
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(userCredential, null, userCredential.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (InvalidLoginException ex){
+                SecurityContextHolder.clearContext();
+
+                response.sendError(
+                        HttpServletResponse.SC_UNAUTHORIZED,
+                        "Invalid access token."
+                );
+                return;
+            }
         }
 
         filterChain.doFilter(request, response);

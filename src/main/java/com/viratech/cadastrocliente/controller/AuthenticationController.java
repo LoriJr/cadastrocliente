@@ -1,5 +1,6 @@
 package com.viratech.cadastrocliente.controller;
 
+import com.viratech.cadastrocliente.authentication.AuthenticationService;
 import com.viratech.cadastrocliente.authentication.TokenService;
 import com.viratech.cadastrocliente.dto.UserCredentialRequestDTO;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
@@ -36,59 +37,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/auth")
 public class AuthenticationController {
 
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
-    private final UserCredentialRepository repository;
+    private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody UserCredentialRequestDTO requestLogin) {
-        try {
-            var authenticationToken = new UsernamePasswordAuthenticationToken(
-                    requestLogin.email(), requestLogin.password());
+    public ResponseEntity<AuthToken> login(@Valid @RequestBody UserCredentialRequestDTO requestLogin) {
 
-            var authentication = authenticationManager.authenticate(authenticationToken);
-
-            String accessToken = tokenService.createToken((UserCredential) authentication.getPrincipal());
-            String refreshToken = tokenService.createRefreshToken((UserCredential) authentication.getPrincipal());
-
-            return ResponseEntity.ok(new AuthToken(accessToken, refreshToken));
-        }
-        catch (DisabledException ex) {
-            throw new InvalidLoginException("Account pending email verification.");
-        }
-        catch (LockedException ex) {
-            throw new InvalidLoginException("User account is blocked.");
-        }
-        catch (AuthenticationException ex) {
-            throw new InvalidLoginException("email or password invalid");
-        }
+        AuthToken authToken = authenticationService.login(
+                requestLogin
+        );
+        return ResponseEntity.ok(authToken);
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@Valid @RequestBody RefreshToken token) {
+    public ResponseEntity<AuthToken> refreshToken(@Valid @RequestBody RefreshToken token) {
 
-        try {
-            var refreshTokenOld = token.refreshToken();
-            Long id = Long.valueOf(tokenService.verifyToken(refreshTokenOld));
-            var user = repository.findById(id);
-
-            String accessToken = tokenService.createToken(user.orElseThrow());
-            String refreshToken = tokenService.createRefreshToken(user.orElseThrow());
-
-            UserCredential credential = user.orElseThrow();
-
-            if (!credential.isEnabled()) {
-                throw new DisabledException("Account disabled");
-            }
-
-            if (!credential.isAccountNonLocked()) {
-                throw new LockedException("Account locked");
-            }
-
-            return ResponseEntity.ok(new AuthToken(accessToken, refreshToken));
-        } catch (AuthenticationException ex) {
-            throw new InvalidLoginException("failed refresh token!");
-        }
+        AuthToken authToken = authenticationService.refreshToken(
+                token.refreshToken()
+        );
+        return ResponseEntity.ok(authToken);
     }
 
 }
