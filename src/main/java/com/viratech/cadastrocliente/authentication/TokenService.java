@@ -7,7 +7,11 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -15,9 +19,17 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
+    private final Algorithm algorithm;
+
+    public TokenService(
+            @Value("${api.security.token.secret}")
+                    String secret)
+    {
+        this.algorithm = Algorithm.HMAC256(secret);
+    }
+
     public String createToken(UserCredential user){
         try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
             return JWT.create()
                     .withIssuer("auth0")
                     .withSubject(user.getUsername())
@@ -31,7 +43,6 @@ public class TokenService {
 
     public String createRefreshToken(UserCredential user){
         try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
             return JWT.create()
                     .withIssuer("auth0")
                     .withSubject(user.getId().toString())
@@ -43,14 +54,13 @@ public class TokenService {
     }
 
     private Instant expires(Integer timeExpiresAt){
-        return LocalDateTime.now().plusMinutes(timeExpiresAt).toInstant(ZoneOffset.of("-03:00"));
+        return Instant.now().plus(Duration.ofMinutes(timeExpiresAt));
     }
 
     public String verifyToken(String token){
 
         DecodedJWT decodedJWT;
         try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
             JWTVerifier verifier = JWT.require(algorithm)
                     .withIssuer("auth0")
                     .build();

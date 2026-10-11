@@ -80,6 +80,12 @@ spec:
                   name: app-config
                   key: cors-allowed-origin
 
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: jwt-secret
+
           resources:
             requests:
               cpu: 250m
