@@ -40,7 +40,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDTO userSave(UserRequestDTO request, Locale locale) throws MessagingException {
-        log.info("[{}] [userSave] request data of {}", className, request.email());
+        log.info("[{}] [userSave] request start", className);
 
         String className = UserService.class.getSimpleName();
 
@@ -125,7 +125,7 @@ public class UserService {
                 .orElseThrow(() ->
                         new RuntimeException("User not found for this email: " + email));
 
-        log.info("[deleteUserByEmail] id: {} nome: {} email: {}", user.getId(),user.getName(), user.getEmail());
+        log.info("[deleteUserByEmail] id: {} nome: {}", user.getId(),user.getName());
         userRepository.deleteByEmail(email);
     }
 

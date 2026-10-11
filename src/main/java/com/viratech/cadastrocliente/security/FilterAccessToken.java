@@ -2,6 +2,7 @@ package com.viratech.cadastrocliente.security;
 
 import com.viratech.cadastrocliente.authentication.TokenService;
 import com.viratech.cadastrocliente.model.entity.UserCredential;
+import com.viratech.cadastrocliente.model.exceptions.InvalidLoginException;
 import com.viratech.cadastrocliente.repository.UserCredentialRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,11 +32,12 @@ public class FilterAccessToken extends OncePerRequestFilter {
 
         String token = recoveryToken(request);
 
-        logger.info("token: " + token);
-
         if(token != null){
             String email = tokenService.verifyToken(token);
-            UserCredential userCredential = userCredentialRepository.findByUserEmail(email).orElseThrow();
+            UserCredential userCredential = userCredentialRepository.findByUserEmail(email)
+                    .orElseThrow(
+                            ()-> new InvalidLoginException("access unauthorized")
+                    );
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(userCredential, null, userCredential.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -67,6 +67,6 @@ public class EmailService {
 
         mailSender.send(message);
 
-        log.info("[{}] [sendVerificationEmail] e-mail de validação enviado para {}", className, user.getEmail());
+        log.info("[{}] [sendVerificationEmail] e-mail de validação enviado para {}", className, user.getName());
     }
 }
