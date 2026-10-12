@@ -61,6 +61,7 @@ jobs:
             --from-literal=db-password="${{ secrets.POSTGRES_PASSWORD }}" \
             --from-literal=mail-username="${{ secrets.MAIL_USERNAME }}" \
             --from-literal=mail-password="${{ secrets.MAIL_PASSWORD }}" \
+            --from-literal=jwt-secret="${{ secrets.JWT_SECRET }}" \
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Criar ConfigMap de Configuracoes
