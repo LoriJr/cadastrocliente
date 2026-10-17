@@ -49,7 +49,8 @@ public class ConfigSecurity {
                             req.requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN");
                             req.requestMatchers(HttpMethod.GET, "/users/page/**").hasRole("ADMIN");
                             req.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN");
-                            req.requestMatchers(HttpMethod.PATCH, "/add-role/**").hasRole("ADMIN");
+                            req.requestMatchers(HttpMethod.PATCH, "/api/v1/auth/add-role/user/**").hasRole("ADMIN");
+                            req.requestMatchers(HttpMethod.PATCH, "/users/*").authenticated();
 
 
                             req.anyRequest().authenticated();
